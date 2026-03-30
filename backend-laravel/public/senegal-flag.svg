@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="44" height="44">
+  <!-- Drapeau du Sénégal pour Laravel (petit format) -->
+  <rect width="900" height="200" fill="#007A5E"/>
+  <rect y="200" width="900" height="200" fill="#FCED00"/>
+  <rect y="400" width="900" height="200" fill="#CE1126"/>
+  <g transform="translate(450, 300)">
+    <polygon points="0,-85 28,-28 90,-28 42,24 68,82 0,36 -68,82 -42,24 -90,-28 -28,-28" fill="#00A651"/>
+  </g>
+</svg>

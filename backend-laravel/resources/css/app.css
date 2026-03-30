@@ -1,0 +1,23 @@
+@import 'tailwindcss' prefix(tw);
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Make existing emerald utilities follow the portal brand palette */
+    --color-emerald-50: color-mix(in oklab, var(--brand, #16a34a) 8%, white);
+    --color-emerald-100: color-mix(in oklab, var(--brand, #16a34a) 14%, white);
+    --color-emerald-200: color-mix(in oklab, var(--brand, #16a34a) 24%, white);
+    --color-emerald-300: color-mix(in oklab, var(--brand, #16a34a) 38%, white);
+    --color-emerald-400: color-mix(in oklab, var(--brand, #16a34a) 62%, white);
+    --color-emerald-500: var(--brand, #16a34a);
+    --color-emerald-600: color-mix(in oklab, var(--brand, #16a34a) 88%, black);
+    --color-emerald-700: var(--brand-dark, #15803d);
+    --color-emerald-800: color-mix(in oklab, var(--brand-dark, #15803d) 86%, black);
+    --color-emerald-900: color-mix(in oklab, var(--brand-dark, #15803d) 72%, black);
+}

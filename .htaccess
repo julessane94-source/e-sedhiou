@@ -1,0 +1,36 @@
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /mairie_wp/
+
+# Conserver l'autorisation HTTP
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# 1. Si c'est un fichier ou dossier réel, le servir tel quel
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 2. Assets Laravel compilés
+RewriteRule ^build/ backend-laravel/public/build/ [L]
+
+# 3. Hot reload (dev)
+RewriteRule ^hot$ backend-laravel/public/hot [L]
+
+# 4. Routes Laravel PUBLIQUES (avant authentification)
+RewriteRule ^connexion$ laravel-bridge.php [L,QSA]
+RewriteRule ^inscription$ laravel-bridge.php [L,QSA]
+RewriteRule ^deconnexion$ laravel-bridge.php [L,QSA]
+RewriteRule ^recensement$ laravel-bridge.php [L,QSA]
+
+# 5. Routes Laravel PORTAIL (avec authentification)
+RewriteRule ^portail laravel-bridge.php [L,QSA]
+
+# 6. Routes API
+RewriteRule ^api laravel-bridge.php [L,QSA]
+
+# 7. Tout le reste -> WordPress
+RewriteRule ^ index.php [L]
+</IfModule>
+# END WordPress

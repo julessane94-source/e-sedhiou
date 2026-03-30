@@ -1,0 +1,3416 @@
+/*
+Theme Name: Mairie Civique
+Theme URI: https://localhost/mairie_wp
+Author: GitHub Copilot
+Description: Socle frontend pour un site de mairie avec trois espaces distincts: administration, agents et citoyens.
+Version: 0.1.0
+Requires at least: 6.4
+Tested up to: 6.8
+Requires PHP: 7.4
+Text Domain: mairie-civique
+*/
+
+:root {
+	--mairie-bg: #f0fdf4;
+	--mairie-surface: rgba(240, 253, 244, 0.96);
+	--mairie-surface-strong: #ffffff;
+	--mairie-ink: #1c2434;
+	--mairie-muted: #5b6475;
+	--mairie-primary: #047857;
+	--mairie-primary-strong: #065f46;
+	--mairie-secondary: #10b981;
+	--mairie-accent: #b20000;
+	--mairie-border: rgba(22, 163, 74, 0.12);
+	--mairie-shadow: 0 20px 50px rgba(6, 95, 70, 0.14);
+	--mairie-ring: 0 0 0 4px rgba(16, 185, 129, 0.28);
+	--mairie-radius: 24px;
+	--mairie-max-width: 1180px;
+	--mairie-font-heading: "Manrope", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+	--mairie-font-body: "Manrope", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+	--mairie-h1-size: clamp(2.15rem, 4.6vw, 3.55rem);
+	--mairie-h2-size: clamp(1.55rem, 2.9vw, 2.25rem);
+	--mairie-h3-size: clamp(1.2rem, 1.75vw, 1.45rem);
+	--mairie-text-lead: 1.03rem;
+	--mairie-space-xs: 0.5rem;
+	--mairie-space-sm: 0.75rem;
+	--mairie-space-md: 1.1rem;
+	--mairie-space-lg: 1.7rem;
+	--mairie-space-xl: 2.4rem;
+	--mairie-admin-bar-offset: 0px;
+}
+
+/* ── Bootstrap 5 : surcharges thème vert/blanc ───────── */
+:root {
+	--bs-primary: #047857;
+	--bs-primary-rgb: 4, 120, 87;
+	--bs-success: #047857;
+	--bs-success-rgb: 4, 120, 87;
+	--bs-link-color: #047857;
+	--bs-link-color-rgb: 4, 120, 87;
+	--bs-link-hover-color: #065f46;
+	--bs-body-bg: #f0fdf4;
+	--bs-body-font-family: var(--mairie-font-body);
+	--bs-border-radius: 0.75rem;
+	--bs-border-radius-lg: 1rem;
+	--bs-border-radius-pill: 999px;
+}
+
+.btn-success,
+.btn-primary {
+	--bs-btn-bg: #047857;
+	--bs-btn-border-color: #047857;
+	--bs-btn-hover-bg: #065f46;
+	--bs-btn-hover-border-color: #065f46;
+	--bs-btn-active-bg: #064e3b;
+	--bs-btn-active-border-color: #064e3b;
+	--bs-btn-focus-shadow-rgb: 16, 185, 129;
+}
+
+.btn-outline-success {
+	--bs-btn-color: #047857;
+	--bs-btn-border-color: #047857;
+	--bs-btn-hover-bg: #047857;
+	--bs-btn-hover-border-color: #047857;
+	--bs-btn-active-bg: #065f46;
+	--bs-btn-active-border-color: #065f46;
+}
+
+.form-control,
+.form-select {
+	border-radius: 0.75rem;
+	border-color: rgba(16, 185, 129, 0.24);
+	background: rgba(255, 255, 255, 0.94);
+	font-family: var(--mairie-font-body);
+	color: var(--mairie-ink);
+	padding: 0.65rem 0.9rem;
+	transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+	border-color: #047857;
+	box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.24);
+	background: #ffffff;
+}
+
+.form-label {
+	font-weight: 700;
+	font-size: 0.88rem;
+	color: var(--mairie-ink);
+	margin-bottom: 0.35rem;
+}
+
+.form-label .bi {
+	color: #047857;
+}
+
+/* ── Correction : Texte vertical (writing-mode, rotate) ─────────────────── */
+/* Force l'orientation horizontale pour tous les textes */
+*[style*="writing-mode"],
+*[style*="transform: rotate"],
+.wp-block-group *[style*="writing-mode"],
+.wp-block-group *[style*="transform: rotate"],
+.mairie-article__content *[style*="writing-mode"],
+.mairie-article__content *[style*="transform: rotate"] {
+	writing-mode: horizontal-tb !important;
+	transform: none !important;
+	-webkit-writing-mode: horizontal-tb !important;
+	-moz-writing-mode: horizontal-tb !important;
+	-ms-writing-mode: horizontal-tb !important;
+}
+
+/* Navbar Bootstrap : intégration mairie-header */
+.mairie-header.navbar {
+	padding-top: 0;
+	padding-bottom: 0;
+	backdrop-filter: blur(18px);
+	background: #047857;
+	border-bottom: 1px solid #065f46;
+	box-shadow: 0 10px 30px rgba(6, 95, 70, 0.2);
+}
+
+.mairie-header .mairie-header__inner {
+	padding: 0.75rem 0;
+}
+
+.mairie-header .navbar-toggler:focus {
+	box-shadow: none;
+}
+
+.mairie-nav .navbar-nav .menu-item a,
+.mairie-nav .navbar-nav>li>a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 2.5rem;
+	padding: 0.5rem 1.5rem;
+	border-radius: 0.5rem;
+	border: 1px solid rgba(19, 38, 59, 0.08);
+	background: #047857;
+	font-weight: 700;
+	color: #ffffff;
+	line-height: 1.2;
+	transition: background-color 0.18s, color 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+
+.mairie-nav .navbar-nav .menu-item a:hover,
+.mairie-nav .navbar-nav .menu-item a:focus,
+.mairie-nav .navbar-nav .current-menu-item>a {
+	background: rgba(255, 255, 255, 0.96);
+	color: var(--mairie-ink);
+	border-color: rgba(22, 163, 74, 0.3);
+	box-shadow: 0 8px 18px rgba(15, 23, 42, 0.07);
+}
+
+.mairie-header__cta-group .btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 2.5rem;
+	border-radius: 0.5rem;
+	padding: 0.5rem 1.5rem;
+	line-height: 1.2;
+}
+
+.mairie-header__cta-group .btn:hover,
+.mairie-header__cta-group .btn:focus {
+	box-shadow: 0 8px 18px rgba(6, 95, 70, 0.2);
+}
+
+/* Global override requested: any white text should render in black */
+
+/* Correction :
+   - Les boutons sur fond foncé (btn-success, btn-primary, .bg-success, .bg-primary) gardent un texte blanc
+   - Les boutons sur fond clair gardent un texte foncé
+*/
+.btn-success,
+.btn-primary,
+.bg-success,
+.bg-primary {
+	--bs-btn-color: #fff;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-active-color: #fff;
+}
+
+/* Les textes .text-white restent blancs sauf sur fond blanc ou très clair */
+.text-white,
+.has-white-color,
+[class*=" text-white"],
+[class^="text-white"] {
+	color: #fff !important;
+}
+
+/* ── fin Bootstrap overrides ─────────────────────────── */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body.admin-bar {
+	--mairie-admin-bar-offset: 32px;
+}
+
+@keyframes mairie-fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+body {
+	margin: 0;
+	font-family: var(--mairie-font-body);
+	color: var(--mairie-ink);
+	background:
+		radial-gradient(circle at 0% 0%, rgba(22, 163, 74, 0.12), transparent 28%),
+		radial-gradient(circle at 100% 10%, rgba(134, 239, 172, 0.1), transparent 26%),
+		linear-gradient(180deg, #ffffff 0%, var(--mairie-bg) 100%);
+	line-height: 1.6;
+}
+
+::selection {
+	background: rgba(22, 163, 74, 0.2);
+	color: var(--mairie-ink);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+.btn:focus-visible,
+.mairie-button:focus-visible,
+.mairie-nav a:focus-visible,
+.mairie-service-card__link:focus-visible {
+	outline: none;
+	box-shadow: var(--mairie-ring);
+}
+
+h1,
+h2,
+h3,
+h4 {
+	margin: 0 0 var(--mairie-space-sm);
+	font-family: var(--mairie-font-heading);
+	line-height: 1.25;
+	letter-spacing: -0.01em;
+}
+
+h1 {
+	font-size: clamp(1.95rem, 3.8vw, 3rem);
+	font-weight: 800;
+	line-height: 1.12;
+}
+
+h2 {
+	font-size: clamp(1.38rem, 2.5vw, 2rem);
+	font-weight: 750;
+}
+
+h3 {
+	font-size: clamp(1.06rem, 1.5vw, 1.32rem);
+	font-weight: 700;
+}
+
+p,
+ul,
+ol {
+	margin: 0 0 var(--mairie-space-md);
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+.mairie-site {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.mairie-shell,
+.mairie-header__inner,
+.mairie-footer__inner {
+	width: min(calc(100% - 2rem), var(--mairie-max-width));
+	margin: 0 auto;
+}
+
+.mairie-header {
+	position: sticky;
+	top: var(--mairie-admin-bar-offset);
+	z-index: 30;
+	backdrop-filter: blur(18px);
+	background: #047857;
+	border-bottom: 1px solid #065f46;
+	box-shadow: 0 10px 30px rgba(6, 95, 70, 0.2);
+}
+
+.mairie-header__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.5rem;
+	padding: 1rem 0;
+}
+
+.mairie-header__actions {
+	display: flex;
+	align-items: center;
+	gap: 0.85rem;
+}
+
+.mairie-header__cta {
+	white-space: nowrap;
+}
+
+.mairie-menu-toggle {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	height: 2.9rem;
+	padding: 0 1rem;
+	border-radius: 999px;
+	border: 1px solid rgba(148, 163, 184, 0.28);
+	background: #ffffff;
+	color: var(--mairie-ink);
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+	transition: box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.mairie-menu-toggle:hover,
+.mairie-menu-toggle:focus-visible {
+	border-color: rgba(16, 185, 129, 0.55);
+	box-shadow: 0 10px 20px rgba(6, 95, 70, 0.2);
+}
+
+.mairie-menu-overlay {
+	position: fixed;
+	top: var(--mairie-admin-bar-offset);
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(15, 23, 42, 0.38);
+	backdrop-filter: blur(2px);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 180ms ease;
+	z-index: 35;
+}
+
+.mairie-branding {
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+}
+
+.mairie-branding__seal {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 8px;
+	background: transparent;
+	flex-shrink: 0;
+}
+
+.mairie-branding__title {
+	margin: 0;
+	font-family: var(--mairie-font-heading);
+	font-size: 1.15rem;
+	line-height: 1.2;
+	color: #ffffff;
+}
+
+.mairie-branding__tagline {
+	margin: 0.2rem 0 0;
+	font-size: 0.9rem;
+	color: #d1fae5;
+}
+
+/* Animation scrolling de gauche à droite */
+.mairie-branding__tagline--scrolling {
+	overflow: hidden;
+	white-space: nowrap;
+	width: 100%;
+	max-width: 300px;
+}
+
+.mairie-scrolling-text {
+	display: inline-block;
+	animation: scroll-left 20s linear infinite;
+}
+
+@keyframes scroll-left {
+	0% {
+		transform: translateX(-100%);
+	}
+
+	100% {
+		transform: translateX(calc(100% + 100vw));
+	}
+}
+
+.mairie-nav ul {
+	display: flex;
+	align-items: center;
+	gap: 0.55rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	flex-wrap: wrap;
+}
+
+.mairie-nav a {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.8rem 1.05rem;
+	border-radius: 999px;
+	font-weight: 700;
+	color: var(--mairie-muted);
+	letter-spacing: 0.01em;
+	transition: background-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.mairie-nav a:hover,
+.mairie-nav a:focus-visible,
+.mairie-nav .current-menu-item>a,
+.mairie-nav .current_page_item>a {
+	background: #ffffff;
+	color: var(--mairie-ink);
+	transform: translateY(-1px);
+	box-shadow: 0 10px 20px rgba(15, 23, 42, 0.07);
+}
+
+.mairie-main {
+	flex: 1;
+	padding: 2.4rem 0 4rem;
+}
+
+.mairie-hero {
+	position: relative;
+	overflow: hidden;
+	padding: 4rem;
+	border-radius: calc(var(--mairie-radius) * 1.2);
+	background:
+		linear-gradient(180deg, rgba(4, 120, 87, 0.92), rgba(6, 95, 70, 0.92));
+	color: #ffffff;
+	border: 1px solid #065f46;
+	box-shadow: var(--mairie-shadow);
+	animation: mairie-fade-up 520ms ease-out;
+}
+
+.mairie-hero::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 720'%3E%3Cdefs%3E%3ClinearGradient id='v' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23000000' stop-opacity='0.10'/%3E%3Cstop offset='1' stop-color='%23000000' stop-opacity='0.30'/%3E%3C/linearGradient%3E%3Cpattern id='p' width='140' height='140' patternUnits='userSpaceOnUse'%3E%3Cg opacity='0.18'%3E%3Ccircle cx='70' cy='70' r='44' fill='none' stroke='%23ffffff' stroke-width='3'/%3E%3Cpath d='M70 40 L77.2 59.8 L98 60.6 L81.8 73.2 L87.5 93.5 L70 82 L52.5 93.5 L58.2 73.2 L42 60.6 L62.8 59.8 Z' fill='%23ffffff'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='1200' height='720' fill='%2300875A'/%3E%3Crect x='400' width='400' height='720' fill='%23FCD116'/%3E%3Crect x='800' width='400' height='720' fill='%23CE1126'/%3E%3Cpath d='M600 190 L644.8 313.2 L774.4 318.6 L672.5 398.8 L708.6 519.4 L600 448 L491.4 519.4 L527.5 398.8 L425.6 318.6 L555.2 313.2 Z' fill='%2300875A' opacity='0.55'/%3E%3Crect width='1200' height='720' fill='url(%23p)'/%3E%3Crect width='1200' height='720' fill='url(%23v)'/%3E%3C/svg%3E");
+	background-size: cover;
+	background-position: center;
+	filter: saturate(1.02) contrast(1.02);
+	opacity: 0.55;
+	z-index: 0;
+}
+
+.mairie-hero::after {
+	content: "";
+	position: absolute;
+	inset: -6rem -4rem auto auto;
+	width: 18rem;
+	height: 18rem;
+	border-radius: 50%;
+	background: rgba(22, 163, 74, 0.12);
+	filter: blur(2px);
+	z-index: 0;
+	pointer-events: none;
+}
+
+.mairie-hero__grid,
+.mairie-hero-panel,
+.mairie-hero__eyebrow,
+.mairie-hero h1,
+.mairie-hero p,
+.mairie-hero-badges,
+.mairie-home-kpis {
+	position: relative;
+	z-index: 1;
+}
+
+.mairie-hero__eyebrow,
+.mairie-section__eyebrow {
+	display: inline-flex;
+	margin-bottom: 1rem;
+	padding: 0.35rem 0.75rem;
+	border-radius: 999px;
+	background: rgba(22, 163, 74, 0.1);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	font-size: 0.8rem;
+	font-weight: 800;
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-hero__grid,
+.mairie-section__grid,
+.mairie-space-hero {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 2rem;
+	align-items: start;
+}
+
+.mairie-hero h1,
+.mairie-section h2,
+.mairie-space-hero h1,
+.mairie-page h1 {
+	margin: 0 0 var(--mairie-space-sm);
+	font-family: var(--mairie-font-heading);
+	line-height: 1.15;
+	letter-spacing: -0.03em;
+}
+
+.mairie-hero h1 {
+	font-size: var(--mairie-h1-size);
+	max-width: 11ch;
+	margin-bottom: var(--mairie-space-md);
+}
+
+.mairie-hero p,
+.mairie-space-hero p,
+.mairie-page__content {
+	font-size: var(--mairie-text-lead);
+	color: inherit;
+}
+
+.mairie-hero__lead {
+	max-width: 34rem;
+	margin: 0;
+	color: #d1fae5;
+}
+
+.mairie-section h2,
+.mairie-request-section__intro h2,
+.mairie-login-panel h2,
+.mairie-login-intro h1,
+.mairie-space-hero h1,
+.mairie-page h1 {
+	font-size: var(--mairie-h2-size);
+	margin-bottom: var(--mairie-space-sm);
+}
+
+.mairie-hero__actions,
+.mairie-space-hero__actions {
+	display: flex;
+	gap: 1rem;
+	flex-wrap: wrap;
+	margin-top: var(--mairie-space-lg);
+}
+
+.mairie-home-kpis {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.9rem;
+	margin-top: 1.5rem;
+}
+
+.mairie-home-kpi {
+	padding: 1rem 1.1rem;
+	border-radius: 20px;
+	background: #ecfdf5;
+	border: 1px solid #6ee7b7;
+	box-shadow: 0 14px 28px rgba(6, 95, 70, 0.14);
+	transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.mairie-home-kpi:hover {
+	transform: translateY(-2px);
+	background: #f0fdf4;
+	border-color: #34d399;
+	box-shadow: 0 18px 32px rgba(6, 95, 70, 0.18);
+}
+
+.mairie-hero__welcome {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.55rem 0.9rem;
+	margin-top: 0.4rem;
+	border-radius: 999px;
+	background: #d1fae5;
+	border: 1px solid #6ee7b7;
+	box-shadow: 0 10px 24px rgba(6, 95, 70, 0.16);
+	color: var(--mairie-primary-strong);
+	font-weight: 700;
+}
+
+.mairie-home-kpi strong {
+	display: block;
+	margin-bottom: 0.35rem;
+	font-size: 1.65rem;
+	line-height: 1;
+	font-family: var(--mairie-font-heading);
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-home-kpi span {
+	color: var(--mairie-muted);
+	font-weight: 600;
+	font-size: 0.92rem;
+}
+
+.mairie-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	min-height: 2.75rem;
+	padding: 0.8rem 1.2rem;
+	border-radius: 0.75rem;
+	font-weight: 800;
+	letter-spacing: 0.01em;
+	border: 1px solid rgba(15, 23, 42, 0.22);
+	color: var(--mairie-ink);
+	text-decoration: none;
+	line-height: 1.2;
+	box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+	transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.mairie-button:hover,
+.mairie-button:focus-visible {
+	transform: translateY(-2px);
+	box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
+}
+
+.mairie-button:active {
+	transform: translateY(0);
+}
+
+.mairie-button--light {
+	background: #eef3f9;
+	color: var(--mairie-ink);
+	border-color: rgba(15, 23, 42, 0.24);
+}
+
+.mairie-button--ghost {
+	background: rgba(255, 255, 255, 0.16);
+	border-color: rgba(255, 255, 255, 0.62);
+	color: #ffffff;
+}
+
+.mairie-button--ghost-dark {
+	background: #f2f6fb;
+	border-color: rgba(15, 23, 42, 0.24);
+	color: var(--mairie-ink);
+}
+
+.mairie-button--solid {
+	background: linear-gradient(120deg, var(--mairie-primary), #15803d);
+	color: #ffffff;
+	border-color: rgba(22, 163, 74, 0.28);
+}
+
+.mairie-kpis {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1rem;
+	margin-top: 2rem;
+}
+
+.mairie-kpi {
+	padding: 1.1rem;
+	border-radius: 20px;
+	background: rgba(255, 255, 255, 0.12);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.mairie-kpi strong {
+	display: block;
+	font-size: 1.8rem;
+	font-family: var(--mairie-font-heading);
+	line-height: 1;
+	margin-bottom: 0.45rem;
+}
+
+.mairie-hero-callout {
+	margin-top: 1.4rem;
+	padding: 1.2rem;
+	border-radius: 20px;
+	background: rgba(255, 255, 255, 0.75);
+	border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.mairie-hero-callout strong {
+	display: block;
+	margin-bottom: 0.45rem;
+	font-size: 1rem;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+}
+
+.mairie-hero-callout p {
+	margin: 0;
+	color: var(--mairie-muted);
+}
+
+.mairie-hero-panel {
+	display: grid;
+	gap: 1rem;
+	position: relative;
+	z-index: 1;
+	padding: 0.35rem;
+	border-radius: 28px;
+	background: linear-gradient(160deg, rgba(255, 255, 255, 0.58), rgba(240, 253, 244, 0.72));
+	border: 1px solid rgba(22, 163, 74, 0.14);
+	box-shadow: 0 22px 48px rgba(15, 23, 42, 0.08);
+}
+
+.mairie-hero-feature {
+	padding: 1.4rem;
+	border-radius: 24px;
+	background: rgba(255, 255, 255, 0.9);
+	border: 1px solid #a7f3d0;
+	box-shadow: 0 18px 40px rgba(6, 95, 70, 0.12);
+}
+
+.mairie-hero-feature strong {
+	display: block;
+	margin-bottom: 0.55rem;
+	font-family: var(--mairie-font-heading);
+	font-size: 1.1rem;
+}
+
+.mairie-hero-feature p {
+	margin: 0;
+	color: var(--mairie-muted);
+}
+
+.mairie-hero-badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	margin-top: 1.6rem;
+}
+
+.mairie-hero-badges span {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	padding: 0.55rem 0.85rem;
+	border-radius: 999px;
+	background: #ecfdf5;
+	border: 1px solid #6ee7b7;
+	color: #065f46;
+	font-weight: 700;
+}
+
+.mairie-hero-badges i {
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-hero--blocksy .mairie-hero__grid {
+	align-items: center;
+}
+
+.mairie-section {
+	margin-top: var(--mairie-space-xl);
+	padding: var(--mairie-space-xl);
+	border-radius: var(--mairie-radius);
+	background: var(--mairie-surface);
+	border: 1px solid var(--mairie-border);
+	box-shadow: var(--mairie-shadow);
+	animation: mairie-fade-up 560ms ease-out;
+}
+
+.mairie-section__eyebrow {
+	margin-bottom: var(--mairie-space-sm);
+}
+
+.mairie-section__lead {
+	max-width: 62ch;
+	margin-top: var(--mairie-space-sm);
+	color: var(--mairie-muted);
+}
+
+.mairie-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.25rem;
+	margin-top: 2rem;
+}
+
+.mairie-service-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.5rem;
+	margin-top: 2.4rem;
+}
+
+.mairie-service-card {
+	padding: var(--mairie-space-lg);
+	border-radius: 24px;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.94));
+	border: 1px solid rgba(22, 163, 74, 0.12);
+	box-shadow: 0 16px 38px rgba(15, 23, 42, 0.06);
+	position: relative;
+	overflow: hidden;
+	transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+	display: flex;
+	flex-direction: column;
+	animation: mairie-fade-up 520ms ease-out both;
+}
+
+.mairie-service-grid>.mairie-service-card:nth-child(2) {
+	animation-delay: 70ms;
+}
+
+.mairie-service-grid>.mairie-service-card:nth-child(3) {
+	animation-delay: 120ms;
+}
+
+.mairie-service-grid>.mairie-service-card:nth-child(4) {
+	animation-delay: 170ms;
+}
+
+.mairie-service-grid>.mairie-service-card:nth-child(5) {
+	animation-delay: 220ms;
+}
+
+.mairie-service-grid>.mairie-service-card:nth-child(6) {
+	animation-delay: 270ms;
+}
+
+.mairie-service-card::before {
+	content: "";
+	position: absolute;
+	inset: 0 auto auto 0;
+	width: 100%;
+	height: 3px;
+	background: linear-gradient(90deg, var(--mairie-primary), var(--mairie-secondary));
+}
+
+.mairie-service-card:hover,
+.mairie-service-card:focus-within {
+	transform: translateY(-4px);
+	box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);
+	border-color: rgba(22, 163, 74, 0.18);
+}
+
+.mairie-service-card__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 3.2rem;
+	height: 3.2rem;
+	margin-bottom: 1.2rem;
+	border-radius: 14px;
+	background: linear-gradient(135deg, rgba(22, 163, 74, 0.16), rgba(245, 158, 11, 0.14));
+	color: var(--mairie-primary-strong);
+	font-size: 1.45rem;
+	box-shadow: 0 12px 24px rgba(22, 163, 74, 0.08);
+}
+
+.mairie-service-card__header {
+	position: relative;
+	z-index: 1;
+	flex: 1;
+}
+
+.mairie-service-card__title,
+.mairie-service-card h3,
+.mairie-process-step h3 {
+	margin-top: 0;
+	margin-bottom: 0.6rem;
+	font-family: var(--mairie-font-heading);
+	font-size: 1.35rem;
+	line-height: 1.2;
+	color: var(--mairie-ink);
+}
+
+.mairie-service-card__desc,
+.mairie-service-card p,
+.mairie-process-step p {
+	margin-top: 0;
+	margin-bottom: 1rem;
+	color: var(--mairie-muted);
+	font-size: 0.95rem;
+	line-height: 1.5;
+}
+
+.mairie-service-card__list {
+	margin: 1.2rem 0;
+	padding-left: 1.4rem;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	flex: 1;
+}
+
+.mairie-service-card__list li {
+	color: var(--mairie-muted);
+	font-size: 0.93rem;
+	position: relative;
+	padding-left: 0.8rem;
+}
+
+.mairie-service-card__list li::before {
+	content: "✓";
+	position: absolute;
+	left: 0;
+	color: var(--mairie-primary-strong);
+	font-weight: 700;
+}
+
+.mairie-service-card__footer {
+	margin-top: 1.4rem;
+	padding-top: 1.2rem;
+	border-top: 1px solid rgba(22, 163, 74, 0.08);
+	position: relative;
+	z-index: 1;
+}
+
+.mairie-service-card__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: var(--mairie-primary-strong);
+	font-weight: 600;
+	font-size: 0.95rem;
+	text-decoration: none;
+	transition: gap 180ms ease, color 180ms ease;
+}
+
+.mairie-service-card__link:hover,
+.mairie-service-card__link:focus-visible {
+	color: var(--mairie-primary);
+	gap: 0.7rem;
+}
+
+.mairie-section--contrast {
+	background:
+		linear-gradient(135deg, rgba(10, 47, 102, 0.97), rgba(14, 65, 136, 0.93)),
+		var(--mairie-surface);
+	color: #fffdf7;
+}
+
+.mairie-section--contrast .mairie-section__lead,
+.mairie-section--contrast .mairie-process-step p,
+.mairie-section--contrast .mairie-process-step h3 {
+	color: #fffdf7;
+}
+
+.mairie-process {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1rem;
+}
+
+.mairie-process-step {
+	padding: 1.2rem 1.3rem;
+	border-radius: 20px;
+	background: rgba(255, 255, 255, 0.12);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.mairie-process-step strong {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 3rem;
+	padding: 0.35rem 0.7rem;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.16);
+	margin-bottom: 0.9rem;
+	font-size: 0.82rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.mairie-showcase {
+	display: grid;
+	grid-template-columns: 1.2fr 0.8fr;
+	gap: 1.5rem;
+	align-items: start;
+}
+
+.mairie-section--news {
+	background: linear-gradient(180deg, rgba(236, 253, 245, 0.98), rgba(255, 255, 255, 0.96));
+}
+
+.mairie-news-grid,
+.mairie-practical-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1rem;
+	align-content: start;
+}
+
+.mairie-practical-grid {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mairie-news-card,
+.mairie-practical-card {
+	padding: var(--mairie-space-lg);
+	border-radius: 22px;
+	background: rgba(255, 255, 255, 0.96);
+	border: 1px solid #a7f3d0;
+	box-shadow: 0 14px 34px rgba(6, 95, 70, 0.12);
+	transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.mairie-news-card:hover,
+.mairie-practical-card:hover,
+.mairie-news-card:focus-within,
+.mairie-practical-card:focus-within {
+	transform: translateY(-3px);
+	background: rgba(255, 255, 255, 0.99);
+	border-color: #34d399;
+	box-shadow: 0 20px 40px rgba(6, 95, 70, 0.18);
+}
+
+.mairie-news-card h3,
+.mairie-practical-card h3 {
+	margin-top: 0;
+	font-family: var(--mairie-font-heading);
+	font-size: 1.35rem;
+	line-height: 1.25;
+}
+
+.mairie-news-card h3 a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.mairie-news-card h3 a:hover,
+.mairie-news-card h3 a:focus-visible {
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-news-card p,
+.mairie-practical-card p {
+	color: var(--mairie-muted);
+}
+
+.mairie-news-card__meta {
+	margin: 0 0 0.85rem;
+	font-size: 0.82rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--mairie-primary-strong);
+	font-weight: 700;
+	display: inline-flex;
+	align-items: center;
+	padding: 0.35rem 0.65rem;
+	border-radius: 999px;
+	background: rgba(22, 163, 74, 0.08);
+}
+
+.mairie-news-card--empty {
+	grid-column: 1 / -1;
+	background:
+		linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(6, 95, 70, 0.12)),
+		rgba(255, 255, 255, 0.88);
+}
+
+.mairie-practical-card__rows {
+	margin-top: 1rem;
+	display: grid;
+	gap: 0.85rem;
+}
+
+.mairie-practical-card__row {
+	display: grid;
+	gap: 0.2rem;
+	padding-top: 0.85rem;
+	border-top: 1px solid rgba(16, 185, 129, 0.22);
+}
+
+.mairie-practical-card__row:first-child {
+	padding-top: 0;
+	border-top: 0;
+}
+
+.mairie-practical-card__row strong {
+	font-size: 0.88rem;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-practical-card__row span,
+.mairie-practical-card__row a {
+	color: var(--mairie-muted);
+	word-break: break-word;
+}
+
+.mairie-practical-card__row a:hover,
+.mairie-practical-card__row a:focus-visible {
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-card {
+	padding: var(--mairie-space-lg);
+	border-radius: 22px;
+	background: var(--mairie-surface-strong);
+	border: 1px solid #a7f3d0;
+	position: relative;
+	overflow: hidden;
+	box-shadow: 0 16px 38px rgba(6, 95, 70, 0.12);
+	transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.mairie-card::before {
+	content: "";
+	position: absolute;
+	inset: 0 auto auto 0;
+	width: 100%;
+	height: 3px;
+	background: linear-gradient(90deg, var(--mairie-primary), var(--mairie-secondary));
+}
+
+.mairie-card:hover,
+.mairie-card:focus-within {
+	transform: translateY(-4px);
+	box-shadow: 0 20px 42px rgba(6, 95, 70, 0.18);
+	border-color: #34d399;
+}
+
+.mairie-card__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 3rem;
+	height: 3rem;
+	margin-bottom: 1rem;
+	border-radius: 1rem;
+	background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(6, 95, 70, 0.16));
+	color: var(--mairie-primary-strong);
+	font-size: 1.25rem;
+	box-shadow: 0 12px 24px rgba(6, 95, 70, 0.12);
+}
+
+.mairie-card h3,
+.mairie-space-panel h2 {
+	margin-top: 0;
+	font-family: var(--mairie-font-heading);
+	font-size: var(--mairie-h3-size);
+	line-height: 1.2;
+}
+
+.mairie-card p,
+.mairie-space-panel p,
+.mairie-muted {
+	color: var(--mairie-muted);
+}
+
+.mairie-card__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	margin-top: 1rem;
+	font-weight: 700;
+	color: var(--mairie-primary-strong);
+	transition: gap 180ms ease, color 180ms ease;
+}
+
+.mairie-card__link:hover,
+.mairie-card__link:focus-visible {
+	gap: 0.65rem;
+}
+
+.mairie-split {
+	display: grid;
+	grid-template-columns: 1.2fr 0.8fr;
+	gap: 1.25rem;
+	margin-top: 2rem;
+}
+
+.mairie-list {
+	margin: 0;
+	padding-left: 1.2rem;
+	color: var(--mairie-muted);
+}
+
+.mairie-list li+li {
+	margin-top: 0.65rem;
+}
+
+.mairie-page,
+.mairie-space {
+	padding: var(--mairie-space-xl);
+	border-radius: var(--mairie-radius);
+	background: var(--mairie-surface);
+	border: 1px solid var(--mairie-border);
+	box-shadow: var(--mairie-shadow);
+}
+
+.mairie-page__hero,
+.mairie-article__header {
+	margin-bottom: 2rem;
+}
+
+.mairie-page__lead,
+.mairie-article__meta {
+	max-width: 72ch;
+	font-size: var(--mairie-text-lead);
+	color: var(--mairie-muted);
+}
+
+.mairie-post-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1.5rem;
+}
+
+.mairie-post-card {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border-radius: 24px;
+	background: rgba(255, 255, 255, 0.88);
+	border: 1px solid rgba(19, 41, 61, 0.08);
+	box-shadow: 0 20px 50px rgba(19, 41, 61, 0.08);
+	min-height: 100%;
+}
+
+.mairie-post-card__media {
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	background: linear-gradient(135deg, rgba(11, 110, 79, 0.16), rgba(201, 123, 50, 0.22));
+}
+
+.mairie-post-card__media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 220ms ease;
+}
+
+.mairie-post-card:hover .mairie-post-card__media img,
+.mairie-post-card:focus-within .mairie-post-card__media img {
+	transform: scale(1.04);
+}
+
+.mairie-post-card__placeholder {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background:
+		radial-gradient(circle at top right, rgba(255, 255, 255, 0.4), transparent 30%),
+		linear-gradient(135deg, rgba(11, 110, 79, 0.18), rgba(201, 123, 50, 0.26));
+}
+
+.mairie-post-card__body {
+	padding: 1.45rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+	flex: 1;
+}
+
+.mairie-post-card__body h2 {
+	margin: 0;
+	font-family: var(--mairie-font-heading);
+	font-size: 1.65rem;
+	line-height: 1.2;
+}
+
+.mairie-post-card__body h2 a:hover,
+.mairie-post-card__body h2 a:focus-visible {
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-post-card__body p {
+	margin: 0;
+	color: var(--mairie-muted);
+}
+
+.mairie-post-card__meta {
+	font-size: 0.82rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	font-weight: 700;
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-pagination {
+	margin-top: 2rem;
+	color: var(--mairie-muted);
+	font-weight: 700;
+}
+
+.mairie-pagination .page-numbers {
+	display: flex;
+	gap: 0.6rem;
+	flex-wrap: wrap;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	align-items: center;
+}
+
+.mairie-pagination a,
+.mairie-pagination span {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.6rem;
+	padding: 0.75rem 1rem;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.84);
+	border: 1px solid rgba(19, 41, 61, 0.08);
+	box-shadow: 0 12px 30px rgba(19, 41, 61, 0.06);
+}
+
+.mairie-pagination .current {
+	background: var(--mairie-primary);
+	color: #fffdf7;
+	border-color: transparent;
+}
+
+.mairie-article {
+	padding: 2.6rem;
+	border-radius: calc(var(--mairie-radius) * 1.05);
+	background: rgba(255, 255, 255, 0.88);
+	border: 1px solid rgba(19, 41, 61, 0.08);
+	box-shadow: var(--mairie-shadow);
+	max-width: 960px;
+	margin: 0 auto;
+	position: relative;
+	overflow: hidden;
+}
+
+.mairie-article::before {
+	content: "";
+	position: absolute;
+	inset: 0 auto auto 0;
+	width: 100%;
+	height: 5px;
+	background: linear-gradient(90deg, var(--mairie-primary), var(--mairie-secondary));
+}
+
+.mairie-article__media {
+	margin-bottom: 2rem;
+	border-radius: 22px;
+	overflow: hidden;
+	box-shadow: 0 18px 44px rgba(19, 41, 61, 0.12);
+}
+
+.mairie-article__media img {
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+}
+
+.mairie-article__content {
+	font-size: 1.08rem;
+	color: var(--mairie-ink);
+	line-height: 1.75;
+	max-width: 70ch;
+}
+
+.mairie-article__content> :first-child {
+	margin-top: 0;
+}
+
+.mairie-article__content h2,
+.mairie-article__content h3,
+.mairie-article__content h4 {
+	font-family: var(--mairie-font-heading);
+	line-height: 1.2;
+	margin-top: 2rem;
+	margin-bottom: 0.8rem;
+}
+
+.mairie-article__content p,
+.mairie-article__content ul,
+.mairie-article__content ol,
+.mairie-article__content blockquote {
+	margin-top: 0;
+	margin-bottom: 1.2rem;
+}
+
+.mairie-article__content a {
+	color: var(--mairie-primary-strong);
+	text-decoration: underline;
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.14em;
+}
+
+.mairie-article__content blockquote {
+	padding: 1.1rem 1.3rem;
+	border-left: 4px solid var(--mairie-secondary);
+	background: rgba(201, 123, 50, 0.08);
+	border-radius: 0 18px 18px 0;
+	color: var(--mairie-muted);
+}
+
+.mairie-article__footer {
+	margin-top: 2.4rem;
+	padding-top: 1.5rem;
+	border-top: 1px solid rgba(19, 41, 61, 0.1);
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.mairie-article__nav {
+	display: flex;
+	gap: 1rem;
+	flex-wrap: wrap;
+	color: var(--mairie-primary-strong);
+	font-weight: 700;
+}
+
+.mairie-space--admin {
+	background:
+		linear-gradient(180deg, rgba(19, 41, 61, 0.05), rgba(19, 41, 61, 0.01)),
+		var(--mairie-surface);
+}
+
+.mairie-space--agent {
+	background:
+		linear-gradient(180deg, rgba(11, 110, 79, 0.06), rgba(11, 110, 79, 0.01)),
+		var(--mairie-surface);
+}
+
+.mairie-space--citoyen {
+	background:
+		linear-gradient(180deg, rgba(201, 123, 50, 0.09), rgba(201, 123, 50, 0.01)),
+		var(--mairie-surface);
+}
+
+.mairie-space-hero {
+	margin-bottom: 2rem;
+	padding-bottom: 2rem;
+	border-bottom: 1px solid var(--mairie-border);
+}
+
+.mairie-space-hero p,
+.mairie-login-intro .mairie-page__lead,
+.mairie-login-panel .mairie-muted,
+.mairie-request-section__intro .mairie-muted {
+	margin-top: 0.35rem;
+}
+
+.mairie-space-panel {
+	padding: var(--mairie-space-lg);
+	border-radius: 24px;
+	background: rgba(255, 255, 255, 0.72);
+	border: 1px solid rgba(22, 163, 74, 0.1);
+	box-shadow: 0 14px 32px rgba(15, 23, 42, 0.05);
+}
+
+.mairie-space-panel ul {
+	margin: 0;
+	padding-left: 1.2rem;
+	color: var(--mairie-muted);
+}
+
+.mairie-access-card {
+	padding: 2rem;
+	border-radius: 24px;
+	background:
+		linear-gradient(135deg, rgba(19, 41, 61, 0.06), rgba(11, 110, 79, 0.1)),
+		rgba(255, 255, 255, 0.82);
+	border: 1px solid rgba(22, 163, 74, 0.12);
+	box-shadow: 0 20px 50px rgba(19, 41, 61, 0.08);
+}
+
+.mairie-access-card h1 {
+	margin-bottom: 0.75rem;
+}
+
+.mairie-login-page {
+	background:
+		linear-gradient(135deg, rgba(19, 41, 61, 0.05), rgba(11, 110, 79, 0.08)),
+		var(--mairie-surface);
+}
+
+.mairie-login-grid {
+	display: grid;
+	grid-template-columns: 1.1fr 0.9fr;
+	gap: 1.5rem;
+	align-items: start;
+}
+
+.mairie-login-intro,
+.mairie-login-panel {
+	padding: var(--mairie-space-lg);
+	border-radius: 24px;
+	background: rgba(255, 255, 255, 0.96);
+	border: 1px solid rgba(148, 163, 184, 0.14);
+	box-shadow: 0 16px 34px rgba(15, 23, 42, 0.06);
+}
+
+.mairie-login-panel h2,
+.mairie-login-intro h1 {
+	line-height: 1.18;
+}
+
+.mairie-login-highlights {
+	margin-top: 1.5rem;
+	display: grid;
+	gap: 1rem;
+}
+
+.mairie-login-highlight {
+	padding: 1.1rem 1.2rem;
+	border-radius: 18px;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(241, 247, 242, 0.92));
+	border: 1px solid rgba(11, 107, 68, 0.14);
+}
+
+.mairie-login-highlight strong {
+	display: block;
+	margin-bottom: 0.35rem;
+	font-family: var(--mairie-font-heading);
+}
+
+.mairie-login-highlight p,
+.mairie-login-meta {
+	margin: 0;
+	color: var(--mairie-muted);
+}
+
+.mairie-login-form {
+	display: grid;
+	gap: 1rem;
+}
+
+.mairie-login-remember {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	color: var(--mairie-muted);
+	font-weight: 600;
+}
+
+.mairie-login-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.85rem;
+	margin-top: 1.5rem;
+}
+
+.mairie-request-section {
+	margin-top: 2rem;
+	padding-top: 2rem;
+	border-top: 1px solid var(--mairie-border);
+}
+
+.mairie-public-request-note {
+	margin-bottom: 1.2rem;
+	padding: 1rem 1.2rem;
+	border-radius: 16px;
+	background: linear-gradient(120deg, rgba(11, 107, 68, 0.12), rgba(216, 161, 27, 0.14));
+	border: 1px solid rgba(11, 107, 68, 0.2);
+	color: var(--mairie-ink);
+}
+
+.mairie-request-lock {
+	margin-bottom: 1.2rem;
+	padding: 1rem 1.2rem;
+	border-radius: 16px;
+	background: linear-gradient(120deg, rgba(182, 58, 44, 0.1), rgba(255, 255, 255, 0.95));
+	border: 1px solid rgba(182, 58, 44, 0.24);
+}
+
+.mairie-request-lock strong {
+	display: block;
+	margin-bottom: 0.35rem;
+	font-family: var(--mairie-font-heading);
+}
+
+.mairie-request-lock p {
+	margin: 0 0 0.8rem;
+	color: var(--mairie-muted);
+}
+
+.mairie-public-request-note strong {
+	display: block;
+	margin-bottom: 0.3rem;
+	font-family: var(--mairie-font-heading);
+	font-size: 1rem;
+}
+
+.mairie-public-request-note p {
+	margin: 0;
+	color: var(--mairie-muted);
+}
+
+.mairie-request-section__intro h2 {
+	margin-bottom: 0.45rem;
+}
+
+.mairie-request-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1.25rem;
+	margin: 1.5rem 0 2rem;
+}
+
+.mairie-form-alert {
+	padding: 1rem 1.2rem;
+	border-radius: 18px;
+	margin-bottom: 1.25rem;
+	border: 1px solid transparent;
+	font-weight: 600;
+}
+
+.mairie-form-alert p {
+	margin: 0;
+	color: inherit;
+}
+
+.mairie-form-alert--success {
+	background: rgba(11, 107, 68, 0.12);
+	border-color: rgba(11, 107, 68, 0.2);
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-form-alert--error {
+	background: rgba(182, 58, 44, 0.1);
+	border-color: rgba(182, 58, 44, 0.2);
+	color: #7f2118;
+}
+
+.mairie-request-form {
+	padding: var(--mairie-space-lg);
+	border-radius: 22px;
+	background: rgba(255, 255, 255, 0.96);
+	border: 1px solid rgba(11, 107, 68, 0.16);
+	box-shadow: 0 18px 36px rgba(15, 23, 42, 0.05);
+}
+
+.mairie-form-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem 1.25rem;
+	margin-bottom: 1rem;
+}
+
+.mairie-form-grid--wide {
+	grid-template-columns: 1fr;
+	margin-bottom: 1.25rem;
+}
+
+.mairie-form-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.mairie-form-field--full {
+	grid-column: 1 / -1;
+}
+
+.mairie-form-field label {
+	font-weight: 700;
+	color: var(--mairie-ink);
+}
+
+.mairie-form-field input,
+.mairie-form-field select,
+.mairie-form-field textarea {
+	width: 100%;
+	padding: 0.9rem 1rem;
+	border-radius: 16px;
+	border: 1px solid rgba(11, 107, 68, 0.16);
+	background: #fff;
+	font: inherit;
+	color: var(--mairie-ink);
+	min-height: 3rem;
+	transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.mairie-form-field input:focus,
+.mairie-form-field select:focus,
+.mairie-form-field textarea:focus {
+	outline: none;
+	border-color: rgba(11, 107, 68, 0.45);
+	box-shadow: 0 0 0 3px rgba(11, 107, 68, 0.12);
+	background: #fff;
+}
+
+.mairie-form-field input[type="file"] {
+	padding: 0.7rem 0.8rem;
+}
+
+.mairie-form-field input[type="file"]::file-selector-button {
+	border: 0;
+	border-radius: 12px;
+	padding: 0.7rem 1rem;
+	margin-right: 0.85rem;
+	background: rgba(11, 107, 68, 0.12);
+	color: var(--mairie-primary-strong);
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+	transition: background-color 180ms ease;
+}
+
+.mairie-form-field input[type="file"]::file-selector-button:hover {
+	background: rgba(11, 107, 68, 0.18);
+}
+
+.mairie-login-public-cta {
+	margin: 1rem 0 1.2rem;
+	padding: 1rem 1.15rem;
+	border-radius: 18px;
+	background: linear-gradient(120deg, rgba(216, 161, 27, 0.16), rgba(255, 255, 255, 0.95));
+	border: 1px solid rgba(216, 161, 27, 0.3);
+}
+
+.mairie-login-public-cta strong {
+	display: block;
+	margin-bottom: 0.3rem;
+	font-family: var(--mairie-font-heading);
+	font-size: 1rem;
+}
+
+.mairie-login-public-cta p {
+	margin: 0 0 0.8rem;
+	color: var(--mairie-muted);
+}
+
+.mairie-auth-switch {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.85rem;
+	margin: 1rem 0 1.4rem;
+}
+
+.mairie-auth-section {
+	margin-top: 1rem;
+}
+
+.mairie-access-card--auth {
+	max-width: 680px;
+	margin-inline: auto;
+}
+
+.mairie-register-panel {
+	margin-top: 1.5rem;
+	padding-top: 1.4rem;
+	border-top: 1px solid rgba(14, 65, 136, 0.16);
+}
+
+.mairie-register-panel h3 {
+	margin: 0 0 0.5rem;
+	font-family: var(--mairie-font-heading);
+	font-size: 1.2rem;
+}
+
+.mairie-form-field.has-error input,
+.mairie-form-field.has-error select,
+.mairie-form-field.has-error textarea {
+	border-color: rgba(160, 44, 44, 0.45);
+	box-shadow: 0 0 0 3px rgba(160, 44, 44, 0.08);
+}
+
+.mairie-form-help,
+.mairie-form-error {
+	margin: 0;
+	font-size: 0.95rem;
+	line-height: 1.5;
+}
+
+.mairie-form-help {
+	color: var(--mairie-muted);
+}
+
+.mairie-form-error {
+	color: #8a1f1f;
+	font-weight: 600;
+}
+
+.mairie-form-actions {
+	display: flex;
+	justify-content: flex-end;
+	padding-top: 0.5rem;
+}
+
+.mairie-button--solid {
+	background: var(--mairie-primary);
+	color: #fffdf7;
+}
+
+.mairie-button--solid:hover,
+.mairie-button--solid:focus-visible {
+	background: var(--mairie-primary-strong);
+}
+
+.mairie-stats-grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 1rem;
+	margin: 1.5rem 0;
+}
+
+.mairie-stat-card,
+.mairie-table-card {
+	padding: var(--mairie-space-lg);
+	border-radius: 22px;
+	background: rgba(255, 255, 255, 0.96);
+	border: 1px solid rgba(11, 107, 68, 0.14);
+	box-shadow: 0 18px 36px rgba(15, 23, 42, 0.05);
+	transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.mairie-stat-card:hover,
+.mairie-table-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 22px 40px rgba(15, 23, 42, 0.08);
+	border-color: rgba(22, 163, 74, 0.2);
+}
+
+.mairie-stat-card strong {
+	display: block;
+	font-family: var(--mairie-font-heading);
+	font-size: 2rem;
+	line-height: 1;
+	margin-bottom: 0.5rem;
+}
+
+.mairie-stat-card span {
+	color: var(--mairie-muted);
+	font-weight: 600;
+}
+
+.mairie-stat-card__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.92);
+	box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+	font-size: 1.15rem;
+	flex-shrink: 0;
+}
+
+.mairie-space-panel ul li i,
+.mairie-card h3 i {
+	vertical-align: middle;
+}
+
+.mairie-table-card__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 1rem;
+	flex-wrap: wrap;
+}
+
+.mairie-table-card__header h2 {
+	margin: 0;
+	font-size: var(--mairie-h3-size);
+}
+
+.mairie-table-wrap {
+	overflow-x: auto;
+}
+
+.mairie-table {
+	width: 100%;
+	border-collapse: collapse;
+	min-width: 720px;
+}
+
+.mairie-table thead tr {
+	background: rgba(22, 163, 74, 0.06);
+}
+
+.mairie-table th,
+.mairie-table td {
+	padding: 0.9rem 0.8rem;
+	text-align: left;
+	border-bottom: 1px solid rgba(19, 41, 61, 0.08);
+	vertical-align: middle;
+}
+
+.mairie-table tbody tr {
+	transition: background-color 0.18s ease;
+}
+
+.mairie-table tbody tr:hover {
+	background: rgba(22, 163, 74, 0.04);
+}
+
+.mairie-table thead th {
+	position: sticky;
+	top: 0;
+	backdrop-filter: blur(12px);
+}
+
+.mairie-table td:last-child {
+	white-space: nowrap;
+}
+
+.mairie-table td:last-child .mairie-button,
+.mairie-table td:last-child .btn {
+	min-height: 2.2rem;
+	padding: 0.45rem 0.9rem;
+	font-size: 0.82rem;
+	font-weight: 700;
+	line-height: 1.15;
+	box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+	border-color: rgba(22, 163, 74, 0.25);
+}
+
+.mairie-table td:last-child .mairie-button:hover,
+.mairie-table td:last-child .btn:hover,
+.mairie-table td:last-child .mairie-button:focus-visible,
+.mairie-table td:last-child .btn:focus-visible {
+	box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+}
+
+.mairie-table th {
+	font-size: 0.92rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--mairie-muted);
+	font-weight: 700;
+}
+
+.mairie-status-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.42rem 0.78rem;
+	border-radius: 0.7rem;
+	font-size: 0.84rem;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	white-space: nowrap;
+	border: 1px solid transparent;
+	transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.mairie-status-badge--pending {
+	background: rgba(201, 123, 50, 0.14);
+	color: #8f5318;
+	border-color: rgba(201, 123, 50, 0.2);
+}
+
+.mairie-status-badge--assigned {
+	background: rgba(80, 100, 220, 0.12);
+	color: #2b3ea0;
+	border-color: rgba(80, 100, 220, 0.18);
+}
+
+.mairie-status-badge--progress {
+	background: rgba(33, 91, 130, 0.12);
+	color: #215b82;
+	border-color: rgba(33, 91, 130, 0.18);
+}
+
+.mairie-status-badge--completed {
+	background: rgba(22, 163, 74, 0.14);
+	color: var(--mairie-primary-strong);
+	border-color: rgba(22, 163, 74, 0.2);
+}
+
+.mairie-status-badge--rejected {
+	background: rgba(160, 44, 44, 0.12);
+	color: #8a1f1f;
+	border-color: rgba(160, 44, 44, 0.18);
+}
+
+/* ── Table footer (lien "Voir tous mes dossiers") ── */
+.mairie-table-footer {
+	display: flex;
+	justify-content: flex-end;
+	padding: 1rem 1.25rem 0.5rem;
+	border-top: 1px solid rgba(11, 107, 68, 0.08);
+	margin-top: 0.75rem;
+}
+
+/* ── Onglets filtres ── */
+.mairie-demande-filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.mairie-filter-count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 1.25rem;
+	height: 1.25rem;
+	padding: 0 0.3rem;
+	margin-left: 0.35rem;
+	border-radius: 999px;
+	font-size: 0.75rem;
+	font-weight: 700;
+	background: rgba(0, 0, 0, 0.12);
+}
+
+/* ── Compteur de messages dans la liste ── */
+.mairie-msg-count {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	font-weight: 600;
+}
+
+.mairie-unread-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 1.1rem;
+	height: 1.1rem;
+	padding: 0 0.25rem;
+	border-radius: 999px;
+	font-size: 0.7rem;
+	font-weight: 700;
+	background: #d63638;
+	color: #fff;
+}
+
+/* ── Vue détail ── */
+.mairie-demande-detail__nav {
+	margin-bottom: 1.25rem;
+}
+
+.mairie-demande-detail {
+	background: var(--mairie-surface, #fff);
+	border: 1px solid var(--mairie-border, #e4e6ea);
+	border-radius: 1.25rem;
+	padding: 1.75rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.mairie-demande-detail__header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.mairie-demande-detail__header h2 {
+	margin: 0 0 0.3rem;
+	font-size: 1.35rem;
+}
+
+.mairie-demande-detail__agent,
+.mairie-demande-detail__notes {
+	background: var(--mairie-bg, #f4f7fa);
+	border-radius: 0.75rem;
+	padding: 0.9rem 1.1rem;
+	font-size: 0.97rem;
+}
+
+.mairie-demande-detail__notes p {
+	margin: 0.35rem 0 0;
+}
+
+/* ── Fil de messages ── */
+.mairie-messages {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.mairie-messages h3 {
+	margin: 0 0 0.5rem;
+	font-size: 1.1rem;
+}
+
+.mairie-messages__thread {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.mairie-message {
+	max-width: 75%;
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+}
+
+.mairie-message--mine {
+	align-self: flex-end;
+	align-items: flex-end;
+}
+
+.mairie-message--theirs {
+	align-self: flex-start;
+	align-items: flex-start;
+}
+
+.mairie-message__meta {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5rem;
+	font-size: 0.8rem;
+}
+
+.mairie-message__sender {
+	font-weight: 700;
+}
+
+.mairie-message__body {
+	padding: 0.7rem 1rem;
+	border-radius: 1rem;
+	font-size: 0.95rem;
+	line-height: 1.5;
+	word-break: break-word;
+}
+
+.mairie-message--mine .mairie-message__body {
+	background: var(--mairie-primary, #0b6e4f);
+	color: #fff;
+	border-bottom-right-radius: 0.25rem;
+}
+
+.mairie-message--theirs .mairie-message__body {
+	background: var(--mairie-bg, #f4f7fa);
+	color: var(--mairie-ink, #13293d);
+	border-bottom-left-radius: 0.25rem;
+}
+
+/* ── Formulaire de réponse ── */
+.mairie-message-form {
+	border-top: 1px solid var(--mairie-border, #e4e6ea);
+	padding-top: 1.25rem;
+}
+
+.mairie-message-form h3 {
+	margin: 0 0 0.75rem;
+	font-size: 1.05rem;
+}
+
+.mairie-message-form textarea {
+	width: 100%;
+	resize: vertical;
+	min-height: 6rem;
+}
+
+.mairie-request-admin-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem;
+}
+
+.mairie-request-admin-field {
+	padding: 0.9rem;
+	border-radius: 14px;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+}
+
+.mairie-request-admin-field strong {
+	display: block;
+	margin-bottom: 0.35rem;
+}
+
+.mairie-request-admin-field p {
+	margin: 0;
+	word-break: break-word;
+}
+
+.mairie-footer {
+	padding: 2.4rem 0 2rem;
+	color: var(--mairie-muted);
+}
+
+.mairie-footer__inner {
+	display: grid;
+	grid-template-columns: 1.3fr 1fr 1fr;
+	gap: 1.25rem;
+	padding: 1.4rem;
+	border: 1px solid rgba(148, 163, 184, 0.16);
+	border-radius: 24px;
+	background: rgba(255, 255, 255, 0.92);
+	box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+}
+
+.mairie-footer__title,
+.mairie-footer__subtitle {
+	margin: 0 0 0.55rem;
+	font-family: var(--mairie-font-heading);
+	font-weight: 800;
+	color: var(--mairie-ink);
+}
+
+.mairie-footer__brand p,
+.mairie-footer__contact p,
+.mairie-footer__links p {
+	margin: 0;
+}
+
+.mairie-footer__links ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: grid;
+	gap: 0.45rem;
+}
+
+.mairie-footer__links a {
+	color: var(--mairie-muted);
+	font-weight: 600;
+}
+
+.mairie-footer__links a:hover,
+.mairie-footer__links a:focus-visible {
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-footer__copyright {
+	margin: 0.9rem 0 0;
+	text-align: center;
+	font-size: 0.95rem;
+}
+
+.screen-reader-text {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+@media (max-width: 960px) {
+	body.admin-bar {
+		--mairie-admin-bar-offset: 46px;
+	}
+
+	.mairie-header__inner {
+		align-items: center;
+	}
+
+	.mairie-menu-toggle {
+		display: inline-flex;
+	}
+
+	.mairie-nav {
+		position: fixed;
+		top: calc(5rem + var(--mairie-admin-bar-offset));
+		right: 0.9rem;
+		left: 0.9rem;
+		padding: 0.95rem;
+		border-radius: 20px;
+		background: rgba(255, 255, 255, 0.98);
+		border: 1px solid rgba(148, 163, 184, 0.2);
+		box-shadow: 0 20px 44px rgba(15, 23, 42, 0.14);
+		opacity: 0;
+		transform: translateY(-14px) scale(0.98);
+		filter: blur(2px);
+		pointer-events: none;
+		transition: opacity 220ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1), filter 220ms ease;
+		z-index: 40;
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav,
+	.mairie-nav.is-open {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+		filter: blur(0);
+		pointer-events: auto;
+	}
+
+	body.mairie-mobile-menu-open {
+		overflow: hidden;
+	}
+
+	body.mairie-mobile-menu-open .mairie-menu-overlay {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.mairie-nav ul {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.mairie-nav li {
+		opacity: 0;
+		transform: translateY(10px);
+		transition: opacity 220ms ease, transform 220ms ease;
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav li,
+	.mairie-nav.is-open li {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav li:nth-child(1),
+	.mairie-nav.is-open li:nth-child(1) {
+		transition-delay: 35ms;
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav li:nth-child(2),
+	.mairie-nav.is-open li:nth-child(2) {
+		transition-delay: 65ms;
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav li:nth-child(3),
+	.mairie-nav.is-open li:nth-child(3) {
+		transition-delay: 95ms;
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav li:nth-child(4),
+	.mairie-nav.is-open li:nth-child(4) {
+		transition-delay: 125ms;
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav li:nth-child(5),
+	.mairie-nav.is-open li:nth-child(5) {
+		transition-delay: 155ms;
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav li:nth-child(6),
+	.mairie-nav.is-open li:nth-child(6) {
+		transition-delay: 185ms;
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav li:nth-child(7),
+	.mairie-nav.is-open li:nth-child(7) {
+		transition-delay: 215ms;
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav li:nth-child(8),
+	.mairie-nav.is-open li:nth-child(8) {
+		transition-delay: 245ms;
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav li:nth-child(9),
+	.mairie-nav.is-open li:nth-child(9) {
+		transition-delay: 275ms;
+	}
+
+	body.mairie-mobile-menu-open .mairie-nav li:nth-child(10),
+	.mairie-nav.is-open li:nth-child(10) {
+		transition-delay: 305ms;
+	}
+
+	.mairie-nav a {
+		justify-content: flex-start;
+		width: 100%;
+	}
+
+	.mairie-header__cta {
+		display: none;
+	}
+
+	.mairie-hero,
+	.mairie-section,
+	.mairie-page,
+	.mairie-space {
+		padding: 2rem;
+	}
+
+	.mairie-hero__grid,
+	.mairie-section__grid,
+	.mairie-space-hero,
+	.mairie-grid,
+	.mairie-kpis,
+	.mairie-split,
+	.mairie-news-grid,
+	.mairie-practical-grid,
+	.mairie-post-grid,
+	.mairie-request-grid,
+	.mairie-form-grid,
+	.mairie-stats-grid,
+	.mairie-request-admin-grid,
+	.mairie-showcase,
+	.mairie-login-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.mairie-service-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.2rem;
+	}
+
+	.mairie-form-field--full {
+		grid-column: auto;
+	}
+
+	.mairie-footer__inner {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.mairie-nav,
+	.mairie-nav li,
+	.mairie-menu-overlay,
+	.mairie-service-card,
+	.mairie-service-card__link,
+	.mairie-status-badge {
+		transition: none;
+		animation: none;
+	}
+}
+
+@media (max-width: 720px) {
+	.mairie-header__inner {
+		align-items: center;
+		flex-direction: row;
+	}
+
+	.mairie-main {
+		padding-top: 2rem;
+	}
+
+	.mairie-hero h1,
+	.mairie-space-hero h1,
+	.mairie-page h1 {
+		font-size: clamp(1.8rem, 8.2vw, 2.45rem);
+	}
+
+	.mairie-section h2,
+	.mairie-request-section__intro h2,
+	.mairie-login-panel h2,
+	.mairie-login-intro h1 {
+		font-size: clamp(1.35rem, 5.2vw, 1.9rem);
+	}
+
+	h3 {
+		font-size: clamp(1rem, 4vw, 1.18rem);
+	}
+
+	.mairie-hero__actions,
+	.mairie-space-hero__actions {
+		width: 100%;
+	}
+
+	.mairie-button {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.mairie-section,
+	.mairie-page,
+	.mairie-space,
+	.mairie-article {
+		padding: 1.3rem;
+		border-radius: 20px;
+	}
+
+	.mairie-form-actions {
+		justify-content: stretch;
+	}
+
+	.mairie-shell,
+	.mairie-header__inner,
+	.mairie-footer__inner {
+		width: min(calc(100% - 1.25rem), var(--mairie-max-width));
+	}
+
+	.mairie-hero,
+	.mairie-section,
+	.mairie-page,
+	.mairie-space,
+	.mairie-article {
+		padding: var(--mairie-space-md);
+		border-radius: 20px;
+	}
+
+	.mairie-section {
+		margin-top: 1.5rem;
+	}
+
+	.mairie-footer__inner {
+		grid-template-columns: 1fr;
+	}
+
+	.mairie-hero-badges {
+		gap: 0.55rem;
+	}
+
+	.mairie-hero-badges span {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.mairie-home-kpis {
+		grid-template-columns: 1fr;
+		gap: 0.7rem;
+	}
+
+	.mairie-home-kpi strong {
+		font-size: 1.4rem;
+	}
+
+	.mairie-service-grid {
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
+
+	.mairie-service-card {
+		padding: var(--mairie-space-md);
+	}
+
+	.mairie-service-card__icon {
+		width: 2.8rem;
+		height: 2.8rem;
+		font-size: 1.25rem;
+		margin-bottom: 0.9rem;
+	}
+
+	.mairie-service-card__title {
+		font-size: 1.2rem;
+	}
+
+	.mairie-table-card {
+		overflow-x: auto;
+	}
+
+	.mairie-table {
+		font-size: 0.85rem;
+	}
+
+	.mairie-table th,
+	.mairie-table td {
+		padding: 0.7rem 0.6rem;
+	}
+
+	.mairie-table td:last-child {
+		white-space: normal;
+	}
+
+	.mairie-table td:last-child .mairie-button,
+	.mairie-table td:last-child .btn {
+		width: 100%;
+		justify-content: center;
+		padding: 0.55rem 0.85rem;
+	}
+
+	.mairie-form-field input,
+	.mairie-form-field select,
+	.mairie-form-field textarea {
+		padding: 0.85rem 0.9rem;
+		font-size: 16px;
+	}
+
+	.mairie-request-form {
+		padding: var(--mairie-space-md);
+	}
+
+	.mairie-form-grid {
+		grid-template-columns: 1fr;
+		gap: 0.8rem;
+	}
+
+	.mairie-login-form {
+		gap: 0.85rem;
+	}
+
+	.mairie-form-actions {
+		flex-direction: column;
+	}
+
+	.mairie-form-actions button,
+	.mairie-form-actions a {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Pages institutionnelles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Bouton primaire ──────────────────────────────────────────────────────── */
+.mairie-button--primary {
+	background: var(--mairie-primary);
+	color: #fff;
+	border-color: var(--mairie-primary-strong);
+}
+
+.mairie-button--primary:hover,
+.mairie-button--primary:focus-visible {
+	background: var(--mairie-primary-strong);
+}
+
+/* ── Notices ──────────────────────────────────────────────────────────────── */
+.mairie-notice {
+	padding: 1rem 1.25rem;
+	border-radius: 14px;
+	margin-bottom: 1.5rem;
+	border: 1px solid transparent;
+}
+
+.mairie-notice--success {
+	background: rgba(14, 65, 136, 0.08);
+	border-color: rgba(14, 65, 136, 0.22);
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-notice--error {
+	background: rgba(160, 44, 44, 0.08);
+	border-color: rgba(160, 44, 44, 0.22);
+	color: #8a1f1f;
+}
+
+.mairie-notice p {
+	margin: 0;
+}
+
+/* ── Bannière hero des pages institutionnelles ───────────────────────────── */
+.mairie-page-hero {
+	background: linear-gradient(135deg, var(--mairie-primary) 0%, var(--mairie-primary-strong) 100%);
+	color: #fff;
+	padding: 3.5rem 0 3rem;
+	margin-bottom: 0;
+}
+
+.mairie-page-hero .mairie-eyebrow {
+	color: rgba(255, 255, 255, 0.7);
+	font-size: 0.82rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	margin: 0 0 0.6rem;
+}
+
+.mairie-page-hero h1 {
+	font-family: var(--mairie-font-heading);
+	font-size: clamp(1.8rem, 4vw, 3rem);
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+	color: #fff;
+	margin: 0;
+}
+
+/* ── Layout general des pages institutionnelles ──────────────────────────── */
+.mairie-institutional-page {
+	padding-top: 3rem;
+	padding-bottom: 4rem;
+}
+
+.mairie-institutional-intro {
+	max-width: 68ch;
+	margin: 0 auto 3rem;
+	text-align: center;
+	font-size: 1.08rem;
+	color: var(--mairie-muted);
+}
+
+/* ── État vide ────────────────────────────────────────────────────────────── */
+.mairie-empty-state {
+	text-align: center;
+	padding: 3rem 2rem;
+	background: var(--mairie-surface);
+	border: 1px dashed var(--mairie-border);
+	border-radius: var(--mairie-radius);
+	color: var(--mairie-muted);
+	margin: 2rem 0;
+}
+
+.mairie-empty-state p {
+	margin: 0 0 1rem;
+}
+
+/* ── Titre de section ─────────────────────────────────────────────────────── */
+.mairie-team-section-title {
+	font-family: var(--mairie-font-heading);
+	font-size: 1.35rem;
+	margin: 3rem 0 1.5rem;
+	padding-bottom: 0.75rem;
+	border-bottom: 2px solid var(--mairie-border);
+	letter-spacing: -0.015em;
+}
+
+/* ── Grille anciens maires ────────────────────────────────────────────────── */
+.mairie-mayor-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 2rem;
+	margin: 2.5rem 0;
+}
+
+.mairie-mayor-card {
+	background: var(--mairie-surface);
+	border-radius: var(--mairie-radius);
+	border: 1px solid var(--mairie-border);
+	box-shadow: var(--mairie-shadow);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.mairie-mayor-card__photo {
+	aspect-ratio: 3/2;
+	background: var(--mairie-bg);
+	overflow: hidden;
+}
+
+.mairie-mayor-card__photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.mairie-mayor-card__placeholder {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 3.5rem;
+	background: linear-gradient(135deg, var(--mairie-bg), #e8e2d6);
+}
+
+.mairie-mayor-card__body {
+	padding: var(--mairie-space-lg);
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+	flex: 1;
+}
+
+.mairie-mayor-card__name {
+	font-family: var(--mairie-font-heading);
+	font-size: 1.1rem;
+	margin: 0;
+	line-height: 1.25;
+}
+
+.mairie-mayor-card__periode {
+	font-size: 0.88rem;
+	font-weight: 700;
+	color: var(--mairie-primary);
+	margin: 0;
+}
+
+.mairie-mayor-card__parti {
+	font-size: 0.8rem;
+	color: var(--mairie-muted);
+	margin: 0;
+}
+
+.mairie-mayor-card__bio {
+	margin: 0.5rem 0 0;
+	font-size: 0.88rem;
+	color: var(--mairie-muted);
+	line-height: 1.5;
+}
+
+/* ── Équipe municipale — mayor mis en avant ──────────────────────────────── */
+.mairie-team-featured {
+	display: grid;
+	grid-template-columns: 180px 1fr;
+	gap: 2.5rem;
+	align-items: center;
+	background: linear-gradient(135deg, var(--mairie-primary) 0%, var(--mairie-primary-strong) 100%);
+	border-radius: var(--mairie-radius);
+	color: #fff;
+	padding: 2.5rem;
+	margin: 2rem 0 3rem;
+}
+
+.mairie-team-featured__photo {
+	width: 180px;
+	height: 180px;
+	border-radius: 50%;
+	overflow: hidden;
+	border: 4px solid rgba(255, 255, 255, 0.3);
+	flex-shrink: 0;
+}
+
+.mairie-team-featured__photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.mairie-team-featured__placeholder {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 4rem;
+	background: rgba(255, 255, 255, 0.12);
+}
+
+.mairie-team-featured__eyebrow {
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.65);
+	margin: 0 0 0.5rem;
+}
+
+.mairie-team-featured__name {
+	font-family: var(--mairie-font-heading);
+	font-size: clamp(1.5rem, 3vw, 2.2rem);
+	letter-spacing: -0.02em;
+	margin: 0 0 0.5rem;
+	color: #fff;
+	line-height: 1.15;
+}
+
+.mairie-team-featured__role {
+	margin: 0 0 0.75rem;
+	opacity: 0.85;
+}
+
+.mairie-team-featured__periode {
+	font-size: 0.88rem;
+	color: rgba(255, 255, 255, 0.7);
+	margin: 0;
+}
+
+/* ── Équipe municipale — grille adjoints / conseillers ───────────────────── */
+.mairie-team-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 1.5rem;
+	margin-bottom: 2.5rem;
+}
+
+.mairie-team-card {
+	background: var(--mairie-surface);
+	border: 1px solid var(--mairie-border);
+	border-radius: calc(var(--mairie-radius) * 0.75);
+	padding: 1.5rem 1.25rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 0.45rem;
+	box-shadow: 0 4px 12px rgba(19, 41, 61, 0.06);
+}
+
+.mairie-team-card__photo {
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin-bottom: 0.5rem;
+	background: var(--mairie-bg);
+}
+
+.mairie-team-card__photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.mairie-team-card__placeholder {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2rem;
+}
+
+.mairie-team-card__name {
+	font-family: var(--mairie-font-heading);
+	font-size: 0.98rem;
+	margin: 0;
+	line-height: 1.25;
+}
+
+.mairie-team-card__role {
+	font-size: 0.8rem;
+	font-weight: 700;
+	color: var(--mairie-primary);
+	margin: 0;
+}
+
+.mairie-team-card__periode {
+	font-size: 0.76rem;
+	color: var(--mairie-muted);
+	margin: 0;
+}
+
+/* ── Timeline historique ──────────────────────────────────────────────────── */
+.mairie-timeline {
+	position: relative;
+	padding: 1rem 0 2rem;
+	margin: 1.5rem 0;
+}
+
+.mairie-timeline::before {
+	content: '';
+	position: absolute;
+	left: 5.5rem;
+	top: 0;
+	bottom: 0;
+	width: 2px;
+	background: linear-gradient(180deg, var(--mairie-primary) 0%, var(--mairie-secondary) 100%);
+}
+
+.mairie-timeline__item {
+	display: flex;
+	gap: 2rem;
+	margin-bottom: 2.5rem;
+	position: relative;
+}
+
+.mairie-timeline__year {
+	flex-shrink: 0;
+	width: 4.5rem;
+	font-family: var(--mairie-font-heading);
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--mairie-primary);
+	text-align: right;
+	padding-top: 0.15rem;
+}
+
+.mairie-timeline__dot {
+	flex-shrink: 0;
+	width: 1.1rem;
+	height: 1.1rem;
+	border-radius: 50%;
+	background: var(--mairie-primary);
+	border: 3px solid var(--mairie-surface-strong);
+	box-shadow: 0 0 0 2px var(--mairie-primary);
+	margin-top: 0.2rem;
+	position: relative;
+	z-index: 1;
+}
+
+.mairie-timeline__body {
+	flex: 1;
+	background: var(--mairie-surface);
+	border: 1px solid var(--mairie-border);
+	border-radius: calc(var(--mairie-radius) * 0.6);
+	padding: 1.25rem 1.5rem;
+	box-shadow: 0 4px 12px rgba(19, 41, 61, 0.06);
+}
+
+.mairie-timeline__title {
+	font-family: var(--mairie-font-heading);
+	font-size: 1rem;
+	margin: 0 0 0.5rem;
+	color: var(--mairie-ink);
+}
+
+.mairie-timeline__text {
+	margin: 0;
+	color: var(--mairie-muted);
+	font-size: 0.92rem;
+	line-height: 1.6;
+}
+
+/* ── Services municipaux ──────────────────────────────────────────────────── */
+.mairie-services-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 2rem;
+	margin: 2.5rem 0;
+}
+
+.mairie-service-card {
+	background: var(--mairie-surface);
+	border: 1px solid var(--mairie-border);
+	border-radius: var(--mairie-radius);
+	padding: 2rem;
+	box-shadow: var(--mairie-shadow);
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.mairie-service-card:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 32px 72px rgba(19, 41, 61, 0.16);
+}
+
+.mairie-service-card__icon {
+	font-size: 2.4rem;
+	line-height: 1;
+}
+
+.mairie-service-card__header {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.mairie-service-card__title {
+	font-family: var(--mairie-font-heading);
+	font-size: 1.1rem;
+	margin: 0;
+	color: var(--mairie-ink);
+}
+
+.mairie-service-card__desc {
+	font-size: 0.9rem;
+	color: var(--mairie-muted);
+	margin: 0;
+}
+
+.mairie-service-card__list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.mairie-service-card__list li {
+	font-size: 0.86rem;
+	color: var(--mairie-muted);
+	padding-left: 1.2rem;
+	position: relative;
+}
+
+.mairie-service-card__list li::before {
+	content: '→';
+	position: absolute;
+	left: 0;
+	color: var(--mairie-primary);
+	font-weight: 700;
+}
+
+.mairie-service-card__footer {
+	margin-top: auto;
+	padding-top: 0.75rem;
+}
+
+.mairie-service-card__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-weight: 700;
+	color: var(--mairie-primary);
+	font-size: 0.88rem;
+	text-decoration: none;
+	transition: color 150ms;
+}
+
+.mairie-service-card__link:hover {
+	color: var(--mairie-primary-strong);
+}
+
+/* ── Page Contact ─────────────────────────────────────────────────────────── */
+.mairie-contact-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 3rem;
+	align-items: start;
+}
+
+.mairie-contact-info {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.mairie-contact-block {
+	background: var(--mairie-surface);
+	border: 1px solid var(--mairie-border);
+	border-radius: var(--mairie-radius);
+	padding: 1.75rem 2rem;
+	box-shadow: var(--mairie-shadow);
+}
+
+.mairie-contact-block h2 {
+	font-family: var(--mairie-font-heading);
+	font-size: 1.1rem;
+	margin: 0 0 1rem;
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-contact-block dl {
+	margin: 0;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 0.6rem 1.2rem;
+	align-items: baseline;
+}
+
+.mairie-contact-block dt {
+	font-weight: 700;
+	font-size: 0.82rem;
+	color: var(--mairie-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	white-space: nowrap;
+}
+
+.mairie-contact-block dd {
+	margin: 0;
+	font-size: 0.94rem;
+}
+
+.mairie-contact-map {
+	border-radius: var(--mairie-radius);
+	overflow: hidden;
+	border: 1px solid var(--mairie-border);
+	background: var(--mairie-bg);
+	aspect-ratio: 4/3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.mairie-contact-map iframe {
+	width: 100%;
+	height: 100%;
+	border: 0;
+	display: block;
+}
+
+.mairie-contact-map__placeholder {
+	text-align: center;
+	padding: 2rem;
+	color: var(--mairie-muted);
+}
+
+.mairie-contact-map__placeholder p {
+	margin: 0 0 0.5rem;
+}
+
+.mairie-contact-form-panel {
+	background: var(--mairie-surface);
+	border: 1px solid var(--mairie-border);
+	border-radius: var(--mairie-radius);
+	padding: 2rem 2.5rem;
+	box-shadow: var(--mairie-shadow);
+}
+
+.mairie-contact-form-panel h2 {
+	font-family: var(--mairie-font-heading);
+	font-size: 1.2rem;
+	margin: 0 0 1.5rem;
+	color: var(--mairie-primary-strong);
+}
+
+.mairie-contact-form {
+	display: grid;
+	gap: 1rem;
+}
+
+.mairie-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.mairie-field label {
+	font-weight: 700;
+	font-size: 0.86rem;
+	color: var(--mairie-ink);
+}
+
+.mairie-field input,
+.mairie-field textarea,
+.mairie-field select {
+	padding: 0.7rem 0.85rem;
+	border-radius: 10px;
+	border: 1px solid var(--mairie-border);
+	font-family: var(--mairie-font-body);
+	font-size: 0.95rem;
+	color: var(--mairie-ink);
+	background: var(--mairie-surface-strong);
+	transition: border-color 150ms, box-shadow 150ms;
+	width: 100%;
+}
+
+.mairie-field input:focus,
+.mairie-field textarea:focus,
+.mairie-field select:focus {
+	outline: none;
+	border-color: var(--mairie-primary);
+	box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.24);
+}
+
+.mairie-field textarea {
+	min-height: 140px;
+	resize: vertical;
+}
+
+/* ── Responsive pages institutionnelles ──────────────────────────────────── */
+@media (max-width: 960px) {
+
+	.mairie-team-featured,
+	.mairie-contact-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.mairie-team-featured {
+		text-align: center;
+		justify-items: center;
+	}
+
+	.mairie-team-featured__photo {
+		margin: 0 auto;
+	}
+
+	.mairie-timeline::before {
+		left: 0;
+	}
+
+	.mairie-timeline__item {
+		flex-direction: column;
+		gap: 0.6rem;
+		padding-left: 1.5rem;
+	}
+
+	.mairie-timeline__year {
+		text-align: left;
+		width: auto;
+	}
+
+	.mairie-timeline__dot {
+		display: none;
+	}
+}
+
+display: none;
+}
+}
+
+/* ── Diaporama valeurs civiques (citoyenneté, patriotisme, olympisme) ── */
+.mairie-values__bullets {
+	display: grid;
+	gap: 0.85rem;
+	margin-top: 1.2rem;
+}
+
+.mairie-values__bullet {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.75rem;
+	padding: 0.85rem 1rem;
+	border-radius: 18px;
+	background: rgba(255, 255, 255, 0.10);
+	border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.mairie-values__bullet i {
+	font-size: 1.25rem;
+	color: rgba(255, 255, 255, 0.92);
+	margin-top: 0.15rem;
+	flex-shrink: 0;
+}
+
+.mairie-values__bullet span {
+	color: rgba(255, 255, 255, 0.92);
+	font-weight: 700;
+}
+
+.mairie-values-carousel {
+	width: 100%;
+}
+
+.mairie-values-carousel__viewport {
+	overflow: hidden;
+	border-radius: 24px;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.mairie-values-carousel__track {
+	display: flex;
+	width: 100%;
+	transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	will-change: transform;
+}
+
+.mairie-values-carousel__slide {
+	flex: 0 0 100%;
+	padding: 1.25rem;
+}
+
+.mairie-values-carousel__card {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 0.95rem;
+}
+
+.mairie-values-carousel__visual {
+	border-radius: 18px;
+	overflow: hidden;
+}
+
+.mairie-values-carousel__img {
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	height: auto;
+	object-fit: cover;
+	display: block;
+}
+
+.mairie-values-carousel__visual svg {
+	display: block;
+	width: 100%;
+}
+
+.mairie-values-carousel__content h3 {
+	margin: 0;
+	font-size: 1.35rem;
+}
+
+.mairie-values-carousel__content p {
+	margin: 0;
+	color: rgba(255, 255, 255, 0.86);
+}
+
+.mairie-values-carousel__controls {
+	margin-top: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+}
+
+.mairie-values-carousel__btn {
+	border-radius: 999px;
+	width: 2.5rem;
+	height: 2.5rem;
+	border: 1px solid rgba(255, 255, 255, 0.25);
+	background: rgba(255, 255, 255, 0.10);
+	color: #fff;
+	font-weight: 800;
+	line-height: 1;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	user-select: none;
+}
+
+.mairie-values-carousel__btn:hover,
+.mairie-values-carousel__btn:focus-visible {
+	background: rgba(255, 255, 255, 0.18);
+}
+
+.mairie-values-carousel__dots {
+	margin-top: 0.85rem;
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+}
+
+.mairie-values-carousel__dot {
+	width: 10px;
+	height: 10px;
+	border: 0;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.35);
+	cursor: pointer;
+	padding: 0;
+}
+
+.mairie-values-carousel__dot.is-active {
+	background: var(--mairie-secondary);
+	box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.18);
+}
+
+@media (max-width: 960px) {
+	.mairie-values-carousel__controls {
+		justify-content: center;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mairie-values-carousel__track {
+		transition: none;
+	}
+}

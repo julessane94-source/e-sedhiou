@@ -1,0 +1,135 @@
+Mairie Civique - Diagnostic Sécurité - Chiffres Clés
+Généré: 27/03/2026
+
+=== SCORE GLOBAL ===
+Score,Note,Status
+4.5,10,PRÊT POUR DVELOPPEMENT - PAS PRÊT PRODUCTION
+
+=== ARCHITECTURE ===
+Composant,Version,Notes
+Framework,WordPress 6.x + Laravel 12.x,Hybride
+PHP,8.2+,Requis pour Laravel 12
+MySQL,8.0,2 bases de données distinctes
+Server,XAMPP Local,Développement uniquement
+Theme,Sedhiou Civique Custom,Bootstrap 5
+
+=== POINTS FORTS ===
+#,Élément,Catégorie,Recommendation
+1,Authentification JWT,API,Excellent - Maintenir
+2,Hachage Bcrypt 12 rounds,Passwords,Excellent - Maintenir
+3,Sessions chiffrées,Security,Excellent - Maintenir
+4,Architecture séparée WP/Laravel,Design,Excellent - Maintenir
+5,Protection fichiers sensibles,Hardening,Bon - Continuer
+6,Clés WordPress uniques,Configuration,Bon - Maintenir
+7,Dépendances à jour,Maintenance,Bon - Maintenir
+
+=== POINTS FAIBLES / VULNÉRABILITÉS ===
+#,Vulnérabilité,Niveau,Impact,Coût Fix,Timeline Fix
+1,Secrets en texte clair wp-config,CRITIQUE,Accès BDD + API,€500-1000,3-5 jours
+2,APP_DEBUG=true,CRITIQUE,Révèle code/paths,€0,1 jour
+3,Pas HTTPS + SESSION_SECURE_COOKIE=false,CRITIQUE,MITM attacks,€300-500,1-3 jours
+4,Pas d'HTTPS (HTTP clair),CRITIQUE,Données non chiffrées,€300-500,1-3 jours
+5,Deux BDD non synchronisées,ÉLEVÉ,Incohérence données,€2000-5000,2-4 semaines
+6,Pas Rate Limiting API,ÉLEVÉ,DDoS/Brute force,€500-1000,3-5 jours
+7,Pas CORS configuré,ÉLEVÉ,XSS/Vol données,€300-500,1-3 jours
+8,Plugins WordPress minimaux,MOYEN,Pas WAF,€500-1500,1-2 semaines
+9,Logs non centralisés,MOYEN,Monitoring difficile,€1000-2000,2-3 semaines
+
+=== RECOMMANDATIONS - PHASE 1 (CRITIQUE) ===
+Priorité,Action,Effort,Coût,Timeline
+1,Migrer secrets en env système,2-3 jours,€500-1000,3-5 jours
+2,Configurer HTTPS + SSL,1-2 jours,€300-500,1-3 jours
+3,APP_DEBUG=false,0.5 jour,€0,1 jour
+4,Rate Limiting API,1-2 jours,€500-1000,3-5 jours
+5,Configurer CORS,1 jour,€300-500,1-3 jours
+
+Total Phase 1,5-9 jours,€1600-3000,1-2 semaines
+
+=== RECOMMANDATIONS - PHASE 2 (ÉLEVÉ) ===
+Priorité,Action,Effort,Coût,Timeline
+1,Plugin Wordfence + Cloudflare WAF,2-3 jours,€500-1500,1-2 semaines
+2,Logging centralisé (ELK/Datadog),5-7 jours,€500-2000,2-3 semaines
+3,2FA/MFA Admin,2-3 jours,€300-500,1-2 semaines
+4,Backups automation,1-2 jours,€200-300,1-2 semaines
+
+Total Phase 2,10-15 jours,€1500-4300,1-3 mois
+
+=== RECOMMANDATIONS - PHASE 3 (MOYEN) ===
+Priorité,Action,Effort,Coût,Timeline
+1,Unifier BDD ou Sync,10-15 jours,€3000-8000,3-6 mois
+2,Cache Redis/Memcached,3-5 jours,€500-1000,1-2 semaines
+3,Tests sécurité auto (CI/CD),2-3 jours,€500-1000,1-2 semaines
+
+Total Phase 3,15-23 jours,€4000-10000,3-6 mois
+
+=== COÛTS - HÉBERGEMENT MENSUEL ===
+Service,Configuration,Prix USD,Prix EUR,Obligatoire,Details
+VPS Cloud,2-4vCore/4-8GB/100GB SSD,30-50,25-40,OUI,Recommandé
+Cloudflare Pro,CDN/WAF/DDoS,20,18,OUI,Important pour sécurité
+Backup Offsite,AWS S3 ou équivalent,10-20,9-18,OUI,Obligatoire
+Email Transactionnel,SendGrid/Brevo,15-30,13-27,OUI,Courriers
+Monitoring,Sentry/Datadog,0-50,0-45,NON,Fortement recommandé
+Domaine,.sn or EU,10-20 annuel,9-18 annuel,OUI,Annuel
+
+Total Hébergement Mensuel,50-150,45-135,Dépend choix
+
+=== COÛTS - MAINTENANCE ANNUEL ===
+Catégorie,Description,Effort,Coût Annuel EUR,Notes
+Équipe IT Interne,Admin system + Dev,4-8h/mois,€6000-14400,Embauche ou prestataire
+Support External,SaaS ticket support,24h annual,€2000-5000,Incident response
+Pentest Sécurité,Audit indépendant,40-80h annual,€5000-15000,Essentiel gouvernance
+Formation Staff,Training sécurité,Annuel,€1000-3000,Documentation
+Développement Features,Nouvelles demandes,Variable,€3000-10000+,Par projet
+Audit RGPD,Conformité légale,Annuel,€1000-3000,Données personnelles
+
+=== BUDGET ANNUEL TOTAL ===
+Catégorie,Minimum EUR,Maximum EUR,Commentaire
+Hébergement + Services,672,1260,€55-100/mois
+Équipe IT interne,6000,14400,€500-1200/mois local
+Support + Pentest,7000,20000,Incident response +  audit annuel
+Formation,1000,3000,Documentation staff
+TOTAL ANNUEL,14672,38660,Dépend stratégie outsource/interne
+
+=== SCÉNARIO BUDGÉTAIRE ===
+Scénario,Profile,Infrastructure,Maintenance,Total Annuel,Recommandation
+1 - Local,Équipe IT interne,€700,€6000-14400,€6700-15100,Moins cher si bonne équipe
+2 - Hybrid,Équipe IT + Pentest,€700,€10000-25000,€10700-25700,Équilbre qualité/prix
+3 - Outsource,PaaS managé,€1800,€5000-10000,€6800-11800,Zéro-ops mais plus cher
+4 - Enterprise,Multi-region HA,€5000+,€20000+,€25000+,Pour très haute disponibilité
+5 - Lean,Shared Hosting,€60,€0,€60,NON RECOMMANDÉ - Risques
+
+=== SCORE DE SÉCURITÉ DÉTAILLÉ ===
+Catégorie,Score,Max,% Conformité,Notes
+Authentification,8,10,80%,JWT bon mais needs 2FA
+Encryption,6,10,60%,Sessions OK mais HTTPS missing
+Hardening,4,10,40%,Secrets exposés, DEBUG on
+API Security,3,10,30%,No rate-limit, CORS missing
+Monitoring,3,10,30%,Logs locaux, no centralization
+Backup & DR,4,10,40%,A mettre en place
+RGPD/Compliance,5,10,50%,Basique, audit needed
+Infrastructure,4,10,40%,XAMPP local, PROD à planifier
+Team Capacity,6,10,60%,Dépend équipe
+
+SCORE GLOBAL,4.5,10,45%,PRÊT DEV - PAS PROD
+
+=== CONTACTS UTILES ===
+Ressource,URL,Usage
+OVH VPS,https://www.ovh.fr/vps/,Infrastructure Europe
+Cloudflare,https://www.cloudflare.com,WAF / CDN
+Let's Encrypt,https://letsencrypt.org,SSL gratuit
+Wordfence,https://www.wordfence.com,WP Security
+Datadog,https://www.datadoghq.com,Monitoring
+Sentry,https://sentry.io,Error tracking
+ELK Stack,https://www.elastic.co,Logs centralisés
+AWS Secrets,https://aws.amazon.com/secrets-manager,Secrets manager
+OWASP,https://owasp.org,Best practices
+
+=== NEXT STEPS ===
+Étape,Action,Timeline,Responsable
+1,Lire diagnostic complet,Cette semaine,Management
+2,Réunion équipe IT,Semaine 1,CTO/IT Lead
+3,Estimation coûts Phase 1,Semaine 1,Finance + IT
+4,Lancer Phase 1,Semaine 2,IT Team
+5,Déploiement VPS,Semaine 2-4,Infrastructure
+6,Pentest externe,Semaine 8-10,IT + Externe
+7,Production,Semaine 12,All teams

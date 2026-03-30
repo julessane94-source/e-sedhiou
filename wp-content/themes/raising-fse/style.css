@@ -1,0 +1,191 @@
+/*
+Theme Name: Raising FSE
+Theme URI: https://gracethemes.com/themes/free-charity-foundation-wordpress-theme/
+Author: Grace Themes
+Author URI: https://gracethemes.com/
+Description: The Raising FSE is free charity foundation WordPress theme for creating a NGOs, Non-profit, fundraising, charity and donation website. This theme is also suitable for different types of non-government organizations, charity causes, donations, foundations, church, events, social care, social activity, political campaigns, charity auctions, brochure fundraising, crowdfunding, social networking and related projects. The homepage of the Raising FSE theme is very attractive. The theme is compatible with latest WordPress version. It is the best option in every aspect. It is extremely appealing, and it comes with a modern and professional architecture that perfectly suits your fundraising business. This WordPress theme is SEO-optimized. This means you do not need to worry about the ranking of your website. This theme is compatible with multiple devices. It means you can operate the theme on an array of devices like PCs, tablets, laptops, and smartphones. It comes with HD retina-ready display functions and quality. So it can provide high-quality videos and pictures on every device. Demo: https://gracethemesdemo.com/raising/
+
+Version: 1.1
+License: GNU General Public License version 2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: raising-fse
+Requires PHP:  5.6
+Tested up to: 6.6
+Tags:blog, news, one-column, two-columns, right-sidebar, block-styles, custom-colors, editor-style, custom-background, custom-menu, featured-images, template-editing, full-site-editing, block-patterns,  threaded-comments, wide-blocks, translation-ready
+Raising  FSE WordPress Theme has been created by Grace Themes(gracethemes.com), 2024.
+Raising  FSE WordPress Theme is released under the terms of GNU GPL
+*/
+body.page-template-front .site-main-header {  
+	width:100%; 
+	z-index:999;
+	border-bottom:none !important;
+}
+.site-main-header{  
+	position:relative;
+	border-bottom:1px solid #eee !important;
+}
+.clear{ clear:both; }
+
+.RT-Logo{ position:relative; margin:-56px 0 0 0!important; padding:50px 0 0 0 !important;}
+.QuotColumn{ position:relative;}
+
+.header-left-box{ position:relative;}
+.header-left-box::before{ background-color:#fff; content: ""; display: block; height: 100%; position: absolute; left: -999990px; top: 0; width: 999999px;}
+
+/*dropdown menu background color*/
+.wp-block-navigation .has-child .wp-block-navigation__submenu-container{ background-color:#ffffff;}
+.wp-block-navigation .has-child .wp-block-navigation__submenu-container li{ padding:5px 0; border-bottom:1px solid #eee !important;}
+.wp-block-navigation__submenu-container.wp-block-navigation-submenu{ padding-top:30px !important}
+.wp-block-navigation__submenu-container.wp-block-navigation-submenu li ul{ padding-top:0 !important; left:100% !important; right:auto !important;}
+
+
+/* = Four Column Section 1 CSS
+----------------------------------------------- */
+.programs-4-column{ position:relative;text-align:center; border-radius:10px; }
+.programs-4-column .prog-imgbx{width:120px; height:120px!important;align-items:center!important; display:flex!important;justify-content:center!important; margin:0 auto;border-radius:100%;}
+.programs-4-column .prog-imgbx.bx1{ background-color:#ffded5;}
+.programs-4-column .prog-imgbx.bx2{ background-color:#ffa415;}
+.programs-4-column .prog-imgbx.bx3{ background-color:#d6f1f8;}
+.programs-4-column .prog-imgbx.bx4{ background-color:#cef9e8;}
+
+.programs-4-column:hover{ background-color:#f79e15 !important}
+.programs-4-column:hover .prog-imgbx{ background-color:#fca927 !important}
+.programs-4-column:hover h4.wp-block-heading{ color:#fff !important}
+.programs-4-column:hover a.wp-block-button__link{ background-color:#ffffff !important;  color:#202020 !important }
+.programs-4-column:hover .prog-imgbx img{ filter: invert(100%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) !important;}
+
+
+
+/* = Welcome Section 2 CSS
+----------------------------------------------- */
+
+.welcome-left-part{  position:relative !important;}
+.rt-smal-imgBX{ position: absolute !important; bottom:-70px !important; right:0 !important;}
+
+.causes-imagebx{ position:relative !important;}
+.three-btns{ position: absolute !important; bottom:20px !important; left:35px!important;}
+
+/* = Sidebar CSS
+----------------------------------------------- */
+.st-widgetBX ul.wp-block-latest-posts li{ margin-bottom:20px; min-height:80px;}
+.st-widgetBX ul.wp-block-latest-posts li a.wp-block-latest-posts__post-title{ margin-bottom:5px !important; display:block; line-height:20px;}
+
+
+/* = Blog page Design CSS
+----------------------------------------------- */
+ul.blog-list-style{ 
+	margin:0; 
+	padding:0; 
+}
+ul.blog-list-style li{ 
+	margin-bottom:25px; 
+	padding:30px;
+	border-radius:10px; 
+	display:flow-root; 
+	background-color:#f4f4f4;
+	border:1px solid #eeeeee;
+	
+}
+ul.blog-list-style li .blog-thumbx{ 
+	width:40%; 
+	float:left;
+	margin:0 35px 20px 0;
+}
+
+ul.blog-list-style li .blog-thumbx.wp-block-post-featured-image a,
+ul.blog-list-style li .blog-thumbx.wp-block-post-featured-image img{ height:auto;}
+
+/* = Contact Form 7 CSS
+----------------------------------------------- */
+.wpcf7{ 
+margin:30px 0 0;padding:0;
+}
+.wpcf7 input[type="text"], 
+.wpcf7 input[type="tel"], 
+.wpcf7 input[type="email"]{ 
+	width:40%;
+	border:1px solid #cccccc;
+	box-shadow:inset 1px 1px 2px #ccc;
+	color:#797979;
+	margin-bottom:0;
+	height:40px;
+	padding:0 15px;
+}	
+.wpcf7 textarea{
+	color:#797979;
+	margin-bottom:25px;
+	border:1px solid #cccccc;
+	box-shadow:inset 1px 1px 2px #ccc;
+	padding:10px;
+	width:60%;
+	height:160px;
+	font-size:12px;
+}
+.wpcf7 input[type="submit"]{
+	border-radius:40px;
+	font-weight:600;
+	font-size:16px;
+	cursor:pointer;
+	background-color:#60c19f;
+	padding:20px 40px;
+	color:#ffffff;
+	width:auto;
+	border:none;
+	text-transform:uppercase;
+}
+.wpcf7 input[type="submit"]:hover{
+	background-color:#101010;
+}
+
+/* = Footer CSS
+----------------------------------------------- */
+.site-footer{ 
+	position:relative;
+}
+.site-footer h3.wp-block-heading{ 
+	position:relative; 
+}
+
+.site-footer .wp-block-social-links li:hover{ 
+	background-color:#ff5f15; 
+	color:#ffffff !important; 
+}
+ul.fs-footer-post{ 
+	margin:0; 
+	padding:0;
+}
+ul.fs-footer-post li{ 
+	list-style:none; 
+	margin-bottom:30px;
+}
+ul.fs-footer-post li .wp-block-latest-posts__featured-image{ 
+	margin-top:6px;
+}
+ul.fs-footer-post li .wp-block-latest-posts__featured-image img{ 
+	border-radius:10px;
+}
+ul.fs-footer-post li .wp-block-latest-posts__post-title{ 
+	margin-bottom:15px; 
+	display:block; 
+	line-height:22px;
+}
+ul.fs-footer-post li .wp-block-latest-posts__post-title:hover{ 
+	color:#8cc73e;
+}
+footer.wp-block-template-part{ 
+	margin-block-start:0 !important
+}
+
+.Footer-QuickLinks{ 
+	list-style:none !important; 
+	padding:0 !important;
+}
+.Footer-QuickLinks li{ 
+	list-style:none !important; 
+	padding:5px 0 5px 0 !important;
+}
+.Footer-QuickLinks li a:hover{ 
+	text-decoration:none; 
+}
+.footer-social .wp-block-social-link.wp-social-link .wp-block-social-link-anchor{ padding:17px !important; font-size:20px;}
+.footer-latest-news li{ margin-bottom:10px;}

@@ -1,0 +1,60 @@
+/* Mobile Portrait View */
+@media screen and (max-width:767px) {
+/*Mobile Menu CSS*/
+.wp-block-navigation__responsive-container.is-menu-open.has-modal-open{ background-color:#ffffff !important; padding:25px;}
+/*Custom CSS*/
+.wp-block-group.header-Top .wp-block-group{ flex-wrap:wrap !important; gap:5px !important;  flex-direction: column !important; }
+.wp-block-cover.hdrbanner-BX{ min-height:400px !important;}
+.wp-block-group.bannerInfo h3{ font-size:28px !important;}
+.wp-block-group.bannerInfo h5{ font-size:18px !important;}
+.fse-right-menu:after, .order-btn{ display:none !important;}
+body.page-template-front .ink-site-header{ position:relative !important; background-color:#836f63;}
+
+ul.blog-list-style li{ padding:30px; margin-bottom:25px;}
+ul.blog-list-style li .blog-thumbx{ width:100%; float:none; margin:0 0 20px 0;}
+body.page-template-front .site-main-header{ position: relative !important; background-color:#5c422a !important;}
+.RT-Logo{ margin:0 !important; padding:0 !important;}
+.header-left-box::before{ display:none !important;}
+.header-left-box{ padding: 5px 0 15px 0 !important;}
+.header-left-box .wp-block-column.wp-block-column-is-layout-flow{ padding:5px 0 !important;}
+.wp-block-button.QuoteBtn a{ position:absolute; right:20px; bottom:20px; padding:12px 20px !important;}
+.raising-sections-01 h2.wp-block-heading, .raising-sections-02 h2.wp-block-heading, .raising-sections-03 h2.wp-block-heading{ font-size:35px !important;}
+.welcome-right-50{ padding-top:100px !important; padding-bottom:50px !important;}
+.welcome-right-50 .homeless-people-bx{ padding-top:20px !important;}
+.welcome-right-50 .homeless-people-bx h2.wp-block-heading{ font-size:32px !important}
+.footer-top-contact-info .wp-block-column-is-layout-flow{ border-right:0 !important;}
+}
+
+
+@media screen and (max-width:599px) {
+.HeadMenu-02{ position:absolute; right:10px !important; top:auto !important}
+.HeadMenu-02 .wp-block-navigation__responsive-container-open { color:#fff;}
+.wp-block-cover.hdrbanner-BX{ min-height:300px !important;}
+
+
+/* Navigation Responsive CSS*/
+.wp-block-navigation__responsive-container-close svg,
+.wp-block-navigation__responsive-container-open svg{ width: 42px; height: 42px;  }    
+.wp-block-navigation__responsive-container-open svg path,
+.wp-block-navigation__responsive-container-close svg path{ fill: var(--wp--preset--color--black);  }
+.wp-block-navigation .wp-block-navigation__responsive-container-content ul.wp-block-navigation__container { width: 100%; border-bottom: none;  gap: 0 !important;   }
+.wp-block-navigation .wp-block-navigation__responsive-container-content ul.wp-block-navigation__container li.wp-block-navigation-item {width:100%;gap: 0 !important;border: none !important;}
+.wp-block-navigation .wp-block-navigation__responsive-container-content ul.wp-block-navigation__container li.wp-block-navigation-item a { width: calc( 100% - 48px ); padding: 12px 24px 12px;line-height: 30px;text-align: left;}
+.wp-block-navigation .wp-block-navigation__responsive-container-content ul.wp-block-navigation__container li.wp-block-navigation-item .wp-block-navigation__submenu-icon { font-size: 19px;line-height: 1; position: absolute; right: 0;top: 0; display: block !important; margin-left: 15px; padding: 3px 10px; float: right; height: 42px; width: 42px;}
+.wp-block-navigation .wp-block-navigation__responsive-container-content ul.wp-block-navigation__container li.wp-block-navigation-item .wp-block-navigation__submenu-icon svg { width: 30px;height: 13px; stroke: var(--wp--preset--color--black);display: block;margin: 0 !important;padding: 0 !important;}
+.wp-block-navigation .wp-block-navigation__responsive-container-content ul.wp-block-navigation__container li.wp-block-navigation-item ul.wp-block-navigation__submenu-container {
+width: 100%;gap: 0;margin: 0;padding: 0;display: none;box-shadow: none;  }
+.wp-block-navigation .wp-block-navigation__responsive-container-content ul.wp-block-navigation__container li.wp-block-navigation-item .wp-block-navigation-submenu__toggle[aria-expanded=true] + ul.wp-block-navigation__submenu-container { display: block; margin: 0; padding: 0;  }
+
+}
+
+@media screen and (max-width: 980px){
+.wpcf7 input[type="text"], .wpcf7 input[type="tel"], .wpcf7 input[type="email"], .wpcf7 textarea{ width:100%;}
+.wp-block-button.QuoteBtn a::before{ display:none !important;}
+.header-left-box::before{ display:none !important;}
+.RT-Logo{ margin:0 !important; padding:0 !important;}
+.wp-block-group.raising-sections-03{ padding-top:80px !important;}
+}
+@media screen and (max-width:1200px) and (min-width:981px) { 
+.header-left-box::before{ display:none !important;}
+}

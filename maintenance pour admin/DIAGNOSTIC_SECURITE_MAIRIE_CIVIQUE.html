@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport de Diagnostic Sécurité - Mairie Civique</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #007A5E;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #007A5E;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .metadata {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            font-size: 12px;
+        }
+        
+        .metadata strong {
+            color: #007A5E;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            background-color: #007A5E;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+        
+        .subsection-title {
+            color: #007A5E;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-left: 4px solid #007A5E;
+            padding-left: 10px;
+        }
+        
+        .content {
+            padding: 0 10px;
+            line-height: 1.8;
+        }
+        
+        .content p {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+        
+        .strength-item {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+        
+        .weakness-item {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+        
+        .improvement-item {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+        
+        .item-label {
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .item-description {
+            color: #555;
+            font-size: 13px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        table th {
+            background-color: #007A5E;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .pricing-table th,
+        .pricing-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        .pricing-table th {
+            background-color: #007A5E;
+            color: white;
+        }
+        
+        .price {
+            color: #007A5E;
+            font-weight: bold;
+        }
+        
+        .footer {
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 3px;
+            margin: 15px 0;
+        }
+        
+        .recommendation-box {
+            background-color: #d1ecf1;
+            border: 1px solid #17a2b8;
+            padding: 15px;
+            border-radius: 3px;
+            margin: 15px 0;
+        }
+        
+        .score-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .score-high {
+            background-color: #4caf50;
+        }
+        
+        .score-medium {
+            background-color: #ff9800;
+        }
+        
+        .score-low {
+            background-color: #f44336;
+        }
+        
+        @media print {
+            .page-break {
+                page-break-after: always;
+            }
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            <h1>📋 Rapport de Diagnostic Sécurité</h1>
+            <p>Plateforme : Mairie Civique (WordPress + Laravel)</p>
+        </div>
+        
+        <!-- Métadonnées -->
+        <div class="metadata">
+            <p><strong>Date du rapport :</strong> 27 mars 2026</p>
+            <p><strong>Plateforme :</strong> WordPress 6.x + Laravel 12.x (Architecture Hybride)</p>
+            <p><strong>Type d'évaluation :</strong> Diagnostic complet sécurité, hébergement et maintenance</p>
+            <p><strong>Environnement :</strong> Développement local (XAMPP) / Production à planifier</p>
+        </div>
+        
+        <!-- Section 1: Vue d'ensemble -->
+        <div class="section">
+            <div class="section-title">1. Vue d'Ensemble de l'Architecture</div>
+            <div class="content">
+                <p><strong>Infrastructure actuelle :</strong></p>
+                <ul>
+                    <li>Framework : WordPress (CMS principal) + Laravel 12 (API backend)</li>
+                    <li>PHP : Version 8.2+ requis (Laravel 12)</li>
+                    <li>Base de données : MySQL (mairie_wp_db + mairie_laravel_db)</li>
+                    <li>Serveur : XAMPP (développement), Production non déployée</li>
+                    <li>Thème actif : Sedhiou Civique Personnalisé</li>
+                </ul>
+                
+                <p><strong>Composants clés :</strong></p>
+                <ul>
+                    <li>Frontend : WordPress avec thème personnalisé Bootstrap 5</li>
+                    <li>API : Laravel API REST (JWT Auth)</li>
+                    <li>Assets : Vite (compilation CSS/JS)</li>
+                    <li>PDF : DOMPDF (génération de documents)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Section 2: Points Forts -->
+        <div class="section">
+            <div class="section-title">2. ✅ Points Forts en Sécurité</div>
+            <div class="content">
+                <div class="strength-item">
+                    <span class="item-label">✓ Authentification JWT pour l'API Laravel</span>
+                    <span class="item-description">Tymon/JWT-Auth (v2.3) offre une authentification sécurisée et stateless pour les appels API. Moins vulnérable aux attaques CSRF que les sessions.</span>
+                </div>
+                
+                <div class="strength-item">
+                    <span class="item-label">✓ Hash Bcrypt pour les mots de passe</span>
+                    <span class="item-description">BCRYPT_ROUNDS=12 dans Laravel fournit un hachage sécurisé avec coût computational adéquat (résistance aux attaques par dictionnaire).</span>
+                </div>
+                
+                <div class="strength-item">
+                    <span class="item-label">✓ Sessions chiffrées dans Laravel</span>
+                    <span class="item-description">SESSION_ENCRYPT=true active le chiffrement des sessionStorage dans la base de données, protégeant les données sensibles.</span>
+                </div>
+                
+                <div class="strength-item">
+                    <span class="item-label">✓ Séparation d'architecture WordPress/Laravel</span>
+                    <span class="item-description">Isolation des préoccupations : WordPress gère le CMS, Laravel gère l'API métier. Réduit la surface d'attaque de chaque couche.</span>
+                </div>
+                
+                <div class="strength-item">
+                    <span class="item-label">✓ Protection des fichiers sensibles</span>
+                    <span class="item-description">Fichiers .env, config et vendor en dehors du web root (XAMPP), empêchant l'accès direct.</span>
+                </div>
+                
+                <div class="strength-item">
+                    <span class="item-label">✓ Clés de sécurité WordPress configurées</span>
+                    <span class="item-description">AUTH_KEY, SECURE_AUTH_KEY, LOGGED_IN_KEY, NONCE_SALT sont uniques et aléatoires, valides pour la production.</span>
+                </div>
+                
+                <div class="strength-item">
+                    <span class="item-label">✓ Dépendances à jour (Composer)</span>
+                    <span class="item-description">Laravel 12.x et toutes dépendances utilisant des versions stables et maintenus (DOMPDF, JWT-Auth, etc.).</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 3: Points Faibles -->
+        <div class="section">
+            <div class="section-title">3. ⚠️ Points Faibles et Vulnérabilités</div>
+            <div class="content">
+                <div class="weakness-item">
+                    <span class="item-label">🔴 CRITIQUE : Mots de passe en texte clair dans wp-config.php</span>
+                    <span class="item-description">
+                        <strong>Problème :</strong> DB_PASSWORD et MAIRIE_LARAVEL_API_TOKEN sont visibles dans le code source.<br>
+                        <strong>Risque :</strong> Si wp-config.php est exposé, tous les secrets sont compromis. SEVERE RISK<br>
+                        <strong>Impact :</strong> Accès direct à la base de données, usurpation d'authentification sur l'API.
+                    </span>
+                </div>
+                
+                <div class="weakness-item">
+                    <span class="item-label">🔴 CRITIQUE : APP_DEBUG=true en environnement</span>
+                    <span class="item-description">
+                        <strong>Problème :</strong> Le mode debug Laravel est activé (.env : APP_DEBUG=true).<br>
+                        <strong>Risque :</strong> Les pages d'erreur révèlent la structure du code, chemins serveur, variables. Parfait pour la reconnaissance lors d'une attaque.<br>
+                        <strong>Action :</strong> APP_DEBUG=false obligatoire en production.
+                    </span>
+                </div>
+                
+                <div class="weakness-item">
+                    <span class="item-label">🔴 CRITIQUE : SESSION_SECURE_COOKIE=false</span>
+                    <span class="item-description">
+                        <strong>Problème :</strong> Les cookies de session ne sont pas marqués comme Secure.<br>
+                        <strong>Risque :</strong> Les cookies peuvent être transmis en HTTP clair, vulnérables aux attaques Man-in-the-Middle (MITM).<br>
+                        <strong>Action :</strong> Forcer SESSION_SECURE_COOKIE=true + HTTPS en production.
+                    </span>
+                </div>
+                
+                <div class="weakness-item">
+                    <span class="item-label">🔴 CRITIQUE : Pas d'HTTPS en développement</span>
+                    <span class="item-description">
+                        <strong>Problème :</strong> L'application fonctionne en HTTP local. Pas de chiffrement des données en transit.<br>
+                        <strong>Risque :</strong> En PROD, sans HTTPS, toutes les données sont lisibles en transit.<br>
+                        <strong>Action :</strong> Certificat SSL/TLS obligatoire en production.
+                    </span>
+                </div>
+                
+                <div class="weakness-item">
+                    <span class="item-label">🟠 ÉLEVÉ : Deux bases de données non synchronisées</span>
+                    <span class="item-description">
+                        <strong>Problème :</strong> mairie_wp_db (WordPress) + mairie_laravel_db (Laravel) sont séparées.<br>
+                        <strong>Risque :</strong> Risque de désynchronisation, d'incohérence de données.<br>
+                        <strong>Action :</strong> Unifier les BDD ou mettre en place une synchronisation robuste.
+                    </span>
+                </div>
+                
+                <div class="weakness-item">
+                    <span class="item-label">🟠 ÉLEVÉ : Pas de Rate Limiting sur API</span>
+                    <span class="item-description">
+                        <strong>Problème :</strong> Aucun throttle/rate-limiting configuré pour les endpoints API.<br>
+                        <strong>Risque :</strong> Attaques par force brute, DDoS, épuisement des ressources serveur.<br>
+                        <strong>Action :</strong> Implémenter Laravel Throttle middleware.
+                    </span>
+                </div>
+                
+                <div class="weakness-item">
+                    <span class="item-label">🟠 ÉLEVÉ : Pas de validation CORS visible</span>
+                    <span class="item-description">
+                        <strong>Problème :</strong> Pas de configurations CORS observées pour l'API.<br>
+                        <strong>Risque :</strong> Requêtes cross-origin non contrôlées = XSS, vol de données.<br>
+                        <strong>Action :</strong> Configurer allowedOrigins strictement.
+                    </span>
+                </div>
+                
+                <div class="weakness-item">
+                    <span class="item-label">🟡 MOYEN : Plugins WordPress minimaux</span>
+                    <span class="item-description">
+                        <strong>Problème :</strong> Seul Akismet activé. Pas de plugins de sécurité (Wordfence, iThemes Security).<br>
+                        <strong>Risque :</strong> WordPress sans hardening supplémentaire.<br>
+                        <strong>Action :</strong> Ajouter WAF plugin et monitoring de sécurité.
+                    </span>
+                </div>
+                
+                <div class="weakness-item">
+                    <span class="item-label">🟡 MOYEN : Logs non centralisés</span>
+                    <span class="item-description">
+                        <strong>Problème :</strong> LOG_CHANNEL=stack (logs locaux uniquement).<br>
+                        <strong>Risque :</strong> Logs éparpillés, difficiles à monitorer en cas de breach.<br>
+                        <strong>Action :</strong> Implémenter ELK Stack ou service tiers (Datadog, CloudWatch).
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 4: Recommandations -->
+        <div class="section">
+            <div class="section-title">4. 📈 Recommandations d'Amélioration</div>
+            <div class="content">
+                <div class="subsection-title">Phase 1 : CRITIQUE (1-2 semaines)</div>
+                
+                <div class="improvement-item">
+                    <span class="item-label">1.1 Migrer secrets en variables d'environnement système</span>
+                    <span class="item-description">• Migrer DB_PASSWORD, API_TOKEN vers env système / secrets manager<br>
+                    • Ne jamais committer .env en Git<br>
+                    • Utiliser AWS Secrets Manager / Azure Key Vault en production
+                    </span>
+                </div>
+                
+                <div class="improvement-item">
+                    <span class="item-label">1.2 Activer HTTPS avec certificat SSL/TLS</span>
+                    <span class="item-description">• Certificat SSL (Let's Encrypt gratuit)<br>
+                    • Forcer redirection HTTP → HTTPS<br>
+                    • Configurer HSTS header<br>
+                    • SESSION_SECURE_COOKIE=true
+                    </span>
+                </div>
+                
+                <div class="improvement-item">
+                    <span class="item-label">1.3 Désactiver debug mode</span>
+                    <span class="item-description">• APP_DEBUG=false<br>
+                    • WP_DEBUG=false (déjà correct)<br>
+                    • Rediriger erreurs vers logs, pas vers utilisateurs
+                    </span>
+                </div>
+                
+                <div class="improvement-item">
+                    <span class="item-label">1.4 Implémenter Rate Limiting sur l'API</span>
+                    <span class="item-description">• 60 requêtes/minute/user, 1000/heure/IP<br>
+                    • Middleware Throttle sur routes critiques<br>
+                    • Bloquer automatiquement IPs suspectes
+                    </span>
+                </div>
+                
+                <div class="improvement-item">
+                    <span class="item-label">1.5 Configurer CORS strictement</span>
+                    <span class="item-description">• Whitelist origins autorisées uniquement<br>
+                    • Refuser origins inconnues<br>
+                    • Middleware config/cors.php dans Laravel
+                    </span>
+                </div>
+                
+                <div class="subsection-title">Phase 2 : ÉLEVÉ (1-3 mois)</div>
+                
+                <div class="improvement-item">
+                    <span class="item-label">2.1 Ajouter WAF et plugin de sécurité WordPress</span>
+                    <span class="item-description">• Wordfence Security (gratuit) ou iThemes Security<br>
+                    • Cloudflare WAF<br>
+                    • Monitoring infections temps réel
+                    </span>
+                </div>
+                
+                <div class="improvement-item">
+                    <span class="item-label">2.2 Logging centralisé et monitoring</span>
+                    <span class="item-description">• ELK Stack OU Service : Datadog, Sentry<br>
+                    • Alertes : Login failed x3, SQL errors, latency<br>
+                    • Rétention logs : 90 jours min
+                    </span>
+                </div>
+                
+                <div class="improvement-item">
+                    <span class="item-label">2.3 Configuration 2FA/MFA pour administrateurs</span>
+                    <span class="item-description">• Google Authenticator pour WordPress admins<br>
+                    • JWT + TOTP pour routes Laravel sensibles<br>
+                    • Backup codes
+                    </span>
+                </div>
+                
+                <div class="improvement-item">
+                    <span class="item-label">2.4 Backups automatisés et testés</span>
+                    <span class="item-description">• Backup complet chaque jour à 2am UTC<br>
+                    • Stocker offsite : AWS S3, Google Cloud, Azure<br>
+                    • Test restauration mensuel<br>
+                    • Rétention : 30 jours min, 1 an archives
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 5: Coûts -->
+        <div class="section">
+            <div class="section-title">5. 💰 Coûts Estimés : Hébergement et Maintenance</div>
+            <div class="content">
+                <div class="subsection-title">5.1 Infrastructure Hébergement (mensuel)</div>
+                
+                <table class="pricing-table">
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Configuration</th>
+                            <th>Prix/mois EUR</th>
+                            <th>Recommandation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>VPS Cloud</strong></td>
+                            <td>2-4 vCore, 4-8GB RAM, 100GB SSD</td>
+                            <td class="price">€20-40</td>
+                            <td>✅ Recommandé</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cloudflare Pro</strong></td>
+                            <td>CDN, WAF, DDoS protection</td>
+                            <td class="price">€20</td>
+                            <td>✅ Important</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Backup Service</strong></td>
+                            <td>Stockage cloud sécurisé</td>
+                            <td class="price">€5-15</td>
+                            <td>✅ Obligatoire</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Email Transactionnel</strong></td>
+                            <td>SendGrid, Brevo (SMTP)</td>
+                            <td class="price">€10-25</td>
+                            <td>✅ Obligatoire</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="subsection-title">5.2 Maintenance Annuelle</div>
+                
+                <table class="pricing-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Effort</th>
+                            <th>Coût Annuel EUR</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Équipe IT interne</strong></td>
+                            <td>4-8h/mois</td>
+                            <td class="price">€6000-14400</td>
+                            <td>Maintenance, monitoring, sauvegarde</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Support technique SaaS</strong></td>
+                            <td>24h annual</td>
+                            <td class="price">€2000-5000</td>
+                            <td>Incident support</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Audit sécurité (pentest)</strong></td>
+                            <td>40-80h annuel</td>
+                            <td class="price">€5000-15000</td>
+                            <td>Important pour gouvernance civique</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Formation staff</strong></td>
+                            <td>Annuel</td>
+                            <td class="price">€1000-3000</td>
+                            <td>Formation, documentation</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="subsection-title">5.3 Budget Annuel Total Estimé</div>
+                
+                <table class="pricing-table">
+                    <thead>
+                        <tr>
+                            <th>Catégorie</th>
+                            <th>Coût Annuel EUR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background-color: #f0f0f0;">
+                            <td><strong>Hébergement et services</strong></td>
+                            <td class="price">€672-1260</td>
+                        </tr>
+                        <tr style="background-color: #f0f0f0;">
+                            <td><strong>Maintenance et support</strong></td>
+                            <td class="price">€14000-37400</td>
+                        </tr>
+                        <tr style="background-color: #c8e6c9; font-weight: bold;">
+                            <td><strong>TOTAL MINIMUM</strong></td>
+                            <td class="price">€14672-38660</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="recommendation-box">
+                    <strong>💡 Scénario Recommandé (équipe IT locale) :</strong><br><br>
+                    • Infrastructure VPS Cloud : €25-40/mois<br>
+                    • Services (WAF, backup, email) : €30-40/mois<br>
+                    • Équipe IT interne : 1 admin + 1 dev<br>
+                    • Pentest annuel : €5-10k/an<br><br>
+                    <strong>Budget annuel : €15-25k</strong>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 6: Conclusion -->
+        <div class="section">
+            <div class="section-title">6. 📊 Conclusion et Score Global</div>
+            <div class="content">
+                <h3 style="color: #007A5E; text-align: center; margin-bottom: 20px;">Score de Sécurité Actuel</h3>
+                
+                <div style="text-align: center; margin: 30px 0; background-color: #f5f5f5; padding: 20px; border-radius: 5px;">
+                    <div style="font-size: 48px; font-weight: bold; color: #ff9800; margin-bottom: 10px;">4.5 / 10</div>
+                    <div style="color: #666; font-size: 16px;">Score Global de Sécurité</div>
+                </div>
+                
+                <p><strong>Statut :</strong> <span class="score-badge score-medium">PRÊT POUR DÉVELOPPEMENT - PAS PRÊT POUR PRODUCTION</span></p>
+                
+                <p style="margin-top: 20px;">La plateforme a une bonne foundation architecturale, mais plusieurs vulnérabilités CRITIQUES doivent être addressées :</p>
+                
+                <ul>
+                    <li>🔴 Secrets en texte clair dans wp-config.php</li>
+                    <li>🔴 Debug mode activé (fuite d'informations)</li>
+                    <li>🔴 Pas d'HTTPS, cookies non sécurisés</li>
+                    <li>🟠 Pas de Rate Limiting, CORS, WAF sur API</li>
+                </ul>
+                
+                <div class="recommendation-box" style="margin-top: 30px;">
+                    <strong>✅ Plan d'action :</strong><br>
+                    1. Implémenter Phase 1 (critique) avant beta<br>
+                    2. Déployer sur VPS Cloud sécurisé + HTTPS + WAF<br>
+                    3. Pentest indépendant avant production<br>
+                    4. Formation équipe maintenance<br>
+                    5. Monitoring 24/7 + incident response<br>
+                    6. Audit sécurité annuel obligatoire<br><br>
+                    <strong>Timeline estimée production : 2-3 mois après Phase 1</strong>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <hr style="margin-bottom: 15px;">
+            <p><strong>Rapport généré le 27 mars 2026</strong></p>
+            <p>Document confidentiel - Exclusivement pour Mairie Civique (Sedhiou)</p>
+            <p>Les recommandations sont basées sur bonnes pratiques OWASP et industrie cloud.</p>
+        </div>
+    </div>
+</body>
+</html>

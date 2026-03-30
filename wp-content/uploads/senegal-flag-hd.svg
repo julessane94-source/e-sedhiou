@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600">
+  <!-- Drapeau du Sénégal - Version haute résolution -->
+  
+  <!-- Bande vert (haut) -->
+  <rect width="900" height="200" fill="#007A5E"/>
+  
+  <!-- Bande jaune/or (milieu) -->
+  <rect y="200" width="900" height="200" fill="#FCED00"/>
+  
+  <!-- Bande rouge (bas) -->
+  <rect y="400" width="900" height="200" fill="#CE1126"/>
+  
+  <!-- Étoile verte au centre avec contour blanc discret -->
+  <g transform="translate(450, 300)">
+    <!-- Contour blanc léger pour plus de contraste -->
+    <polygon points="0,-80 24,-24 80,-24 37,20 60,76 0,32 -60,76 -37,20 -80,-24 -24,-24" fill="#007A5E" stroke="none"/>
+    <!-- Étoile principale -->
+    <polygon points="0,-85 28,-28 90,-28 42,24 68,82 0,36 -68,82 -42,24 -90,-28 -28,-28" fill="#00A651"/>
+  </g>
+</svg>
